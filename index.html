@@ -20,31 +20,63 @@ button:disabled{opacity:0.5}
 <div class="card">
 <h3>Ficha de Inscrição</h3>
 
-<input id="nome" placeholder="Nome completo">
-<input id="email" placeholder="Email">
+<input id="nome" placeholder="Nome completo" style="text-transform: uppercase;">
+<input id="email" placeholder="Email" style="text-transform: lowercase;">
 <input id="celular" placeholder="Celular" oninput="formatarCelular(this)">
-<input id="cpf" placeholder="CPF" oninput="formatarCPF(this)">
-<input id="dataRg" placeholder="Data RG" oninput="formatarData(this)">
-<input id="nascimento" placeholder="Nascimento" oninput="formatarData(this)">
-<input id="cep" placeholder="CEP" oninput="formatarCEP(this)">
-<input id="endereco" placeholder="Endereço">
-<input id="numero" placeholder="Número">
-<input id="complemento" placeholder="Complemento">
-<input id="bairro" placeholder="Bairro">
-<input id="cidade" placeholder="Cidade">
-<input id="estado" placeholder="Estado">
-<input id="mae" placeholder="Nome da mãe">
-<input id="pai" placeholder="Nome do pai">
 
 <select id="curso">
-<option value="">Curso</option>
-<option>Transporte</option>
+<option value="">Selecione o curso</option>
+<option>Transporte Coletivo de Passageiros</option>
+<option>Transporte Escolar</option>
+<option>Transporte de Emergência</option>
+<option>Transporte de Produtos Perigosos (MOPP)</option>
+<option>Transporte de Cargas Indivisíveis</option>
+<option>NR 06 - EPI</option>
+<option>NR 11 - Operador de Empilhadeira</option>
+<option>NR 12 - Segurança em Máquinas</option>
+<option>NR 20 - Inflamáveis</option>
+<option>NR 35 - Trabalho em Altura</option>
+<option>Direção Defensiva</option>
+<option>Direção Defensiva + Primeiros Socorros</option>
+<option>Primeiros Socorros</option>
+<option>Logística Básica</option>
 </select>
 
 <select id="tipo">
-<option value="">Tipo</option>
+<option value="">Selecione o tipo</option>
 <option>Formação</option>
 <option>Atualização</option>
+</select>
+
+<input id="cpf" maxlength="14" placeholder="CPF" onkeyup="formatarCPF(this)">
+<input id="rg" placeholder="RG">
+<input id="orgao" placeholder="Órgão emissor (ex: SSP/SP)" onkeyup="this.value=this.value.toUpperCase()">
+<input id="dataRg" maxlength="10" placeholder="Data emissão RG" onkeyup="formatarData(this)">
+<input id="nascimento" maxlength="10" placeholder="Data de nascimento" onkeyup="formatarData(this)">
+<input id="cidadeNascimento" placeholder="Cidade de nascimento">
+<input id="categoriaCNH" placeholder="Categoria CNH" onkeyup="this.value=this.value.toUpperCase()">
+<select id="sexo">
+<option value="">Sexo</option>
+<option>Masculino</option>
+<option>Feminino</option>
+<option>Outros</option>
+</select>
+<select id="estadoCivil">
+<option value="">Estado civil</option>
+<option>Casado(a)</option>
+<option>Solteiro(a)</option>
+<option>Separado(a)</option>
+<option>Outros</option>
+</select>
+<input id="cep" maxlength="9" placeholder="CEP" onkeyup="formatarCEP(this)">
+<input id="endereco" placeholder="Logradouro: Rua/Avenida/Travessa">
+<input id="numero" placeholder="Número">
+<input id="complemento" placeholder="Complemento: Apto/Bloco/Andar">
+<input id="bairro" placeholder="Bairro">
+<input id="cidade" placeholder="Cidade">
+<input id="estado" placeholder="Estado" onkeyup="this.value=this.value.toUpperCase()">
+<input id="mae" placeholder="Nome da mãe">
+<input id="pai" placeholder="Nome do pai">
 </select>
 
 <h3>Termo</h3>
