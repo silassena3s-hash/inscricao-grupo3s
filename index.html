@@ -77,8 +77,8 @@ button:disabled{opacity:0.5}
 <input id="estado" placeholder="Estado" onkeyup="this.value=this.value.toUpperCase()">
 <input id="mae" placeholder="Nome da mãe">
 <input id="pai" placeholder="Nome do pai">
-</select>
-
+<input id="contratoID" placeholder="ID do contrato">
+ 
 <h3>Termo</h3>
 <div id="boxTermo">
 <p>Leia até o final para liberar o aceite...</p>
@@ -176,6 +176,9 @@ async function gerarHash(texto){
 }
 // ===== INICIALIZAÇÃO =====
 document.addEventListener("DOMContentLoaded",()=>{
+
+ let enviando = false;
+
  const box=document.getElementById("boxTermo");
  const aceite=document.getElementById("aceite");
  const btn=document.getElementById("btn");
@@ -188,9 +191,9 @@ document.addEventListener("DOMContentLoaded",()=>{
  box.addEventListener("click",liberar);
 
  function valido(){
-  if(!get("nome")) return false;
-  if(!get("email")) return false;
-  if(!get("celular")) return false;
+  if(!get("email").includes("@")) return false;
+  if(get("cpf").length < 14) return false;
+  if(get("celular").length < 14) return false;
   if(!get("cpf")) return false;
   if(!get("curso")) return false;
   if(!get("tipo")) return false;
@@ -205,9 +208,14 @@ document.addEventListener("DOMContentLoaded",()=>{
  document.addEventListener("input",atualizar);
  aceite.addEventListener("change",atualizar);
 
- btn.addEventListener("click",async()=>{
-  btn.innerText="Enviando...";
-  btn.disabled=true;
+btn.addEventListener("click",async()=>{
+
+ if(enviando) return;
+ enviando = true;
+
+ btn.innerText="Enviando...";
+ btn.disabled=true;
+ 
   const ip=await pegarIP();
   const baseHash=get("nome")+get("cpf")+ip+navigator.userAgent+screen.width+"x"+screen.height+new Date().toISOString();
   const hash=await gerarHash(baseHash);
@@ -240,18 +248,27 @@ document.addEventListener("DOMContentLoaded",()=>{
    hash:hash,
    assinatura:get("assinatura")
   };
-  try{
-   await fetch("https://script.google.com/macros/s/AKfycbzDI3B67qD_uXhDCoVrmcwzSSjBFbf7Fj8YK5i15H23CruJPm1NIizCdKPDF9RZXvo3Fw/exec",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify(dados)
-   });
-   alert("Enviado com sucesso!");
-  }catch{
-   alert("Erro ao enviar");
-   btn.disabled=false;
-  }
-  btn.innerText="FINALIZAR";
+try{
+
+ const res = await fetch("https://script.google.com/macros/s/AKfycbzDI3B67qD_uXhDCoVrmcwzSSjBFbf7Fj8YK5i15H23CruJPm1NIizCdKPDF9RZXvo3Fw/exec",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify(dados)
+ });
+
+ if(res.ok){
+  alert("Enviado com sucesso!");
+ }else{
+  throw new Error("Erro no servidor");
+ }
+
+}catch{
+ alert("Erro ao enviar");
+ btn.disabled=false;
+}
+
+enviando = false;
+btn.innerText="FINALIZAR";
  });
 
 });
