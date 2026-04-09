@@ -1,4 +1,4 @@
-iɓ<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
@@ -252,6 +252,9 @@ try{
 
  const res = await fetch("https://script.google.com/macros/s/AKfycbzDI3B67qD_uXhDCoVrmcwzSSjBFbf7Fj8YK5i15H23CruJPm1NIizCdKPDF9RZXvo3Fw/exec",{
   method:"POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
   body: JSON.stringify(dados)
 });
 
