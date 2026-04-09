@@ -241,10 +241,15 @@ document.addEventListener("DOMContentLoaded",()=>{
     alert("Enviado com sucesso!");
    }else throw new Error("Erro no servidor");
 
-  }catch(err){
-   alert("Erro ao enviar: "+err.message);
-   btn.disabled=false;
-  }
+catch (err) {
+  let msg = "Erro ao enviar";
+  try {
+    const json = await res.json();
+    if(json.message) msg += ": " + json.message;
+  } catch {}
+  alert(msg);
+  btn.disabled = false;
+}
 
   btn.innerText="FINALIZAR";
   enviando=false;
