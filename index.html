@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sistema Grupo 3S</title>
 <style>
-body{font-family:Arial;background:#0f172a;color:white;margin:0}
-.container{max-width:900px;margin:auto;padding:20px}
-.card{background:#1e293b;padding:20px;border-radius:10px}
-input,select{width:100%;padding:12px;margin-bottom:10px;border-radius:6px;border:none}
-button{background:#22c55e;padding:14px;border:none;border-radius:6px;width:100%;font-weight:bold;cursor:pointer}
-button:disabled{opacity:0.5;cursor:default}
-#boxTermo{max-height:200px;overflow:auto;background:#0f172a;padding:10px;border:1px solid #333}
+body { font-family: Arial; background: #0f172a; color: white; margin: 0; }
+.container { max-width: 900px; margin: auto; padding: 20px; }
+.card { background: #1e293b; padding: 20px; border-radius: 10px; }
+input, select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 6px; border: none; }
+button { background: #22c55e; padding: 14px; border: none; border-radius: 6px; width: 100%; font-weight: bold; cursor: pointer; }
+button:disabled { opacity: 0.5; cursor: default; }
+#boxTermo { max-height: 200px; overflow: auto; background: #0f172a; padding: 10px; border: 1px solid #333; }
 </style>
 </head>
 <body>
@@ -30,7 +30,7 @@ button:disabled{opacity:0.5;cursor:default}
 <input id="dataRg" maxlength="10" placeholder="Data emissão RG" onkeyup="formatarData(this)">
 <input id="nascimento" maxlength="10" placeholder="Data de nascimento" onkeyup="formatarData(this)">
 <input id="cidadeNascimento" placeholder="Cidade de nascimento">
-<input id="curso">
+
 <select id="curso">
 <option value="">Selecione o curso</option>
 <option>Transporte Coletivo de Passageiros</option>
@@ -96,10 +96,7 @@ button:disabled{opacity:0.5;cursor:default}
 <p style="margin-top:200px;">Fim do termo</p>
 </div>
 
-<label>
-<input type="checkbox" id="aceite" disabled> Aceito os termos
-</label>
-
+<label><input type="checkbox" id="aceite" disabled> Aceito os termos</label>
 <button id="btn" disabled>FINALIZAR</button>
 </div>
 </div>
@@ -165,14 +162,18 @@ async function gerarHash(texto){
 
 // ===== Inicialização =====
 document.addEventListener("DOMContentLoaded",()=>{
-
  let enviando = false;
  const box=document.getElementById("boxTermo");
  const aceite=document.getElementById("aceite");
  const btn=document.getElementById("btn");
  let liberado=false;
 
- function liberar(){ if(liberado) return; aceite.disabled=false; liberado=true; atualizar(); }
+ function liberar(){ 
+   if(liberado) return; 
+   aceite.disabled=false; 
+   liberado=true; 
+   atualizar(); 
+ }
  box.addEventListener("scroll",()=>{ if(box.scrollTop + box.clientHeight >= box.scrollHeight-5) liberar(); });
  box.addEventListener("touchend",liberar);
  box.addEventListener("click",liberar);
@@ -230,26 +231,24 @@ document.addEventListener("DOMContentLoaded",()=>{
    assinatura:get("assinatura")
   };
 
-  try{
-   const res = await fetch("https://script.google.com/macros/s/AKfycbzk9lZzs8o_-k0bxuYa7_aEXUXQbxnMblA57p280ajsglF4advoam0kZgLVewOvop0xmg/exec",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify(dados)
-   });
-
-   if(res.ok){
-    alert("Enviado com sucesso!");
-   }else throw new Error("Erro no servidor");
-
-catch (err) {
-  let msg = "Erro ao enviar";
   try {
-    const json = await res.json();
-    if(json.message) msg += ": " + json.message;
-  } catch {}
-  alert(msg);
-  btn.disabled = false;
-}
+      const res = await fetch("https://script.google.com/macros/s/AKfycbzk9lZzs8o_-k0bxuYa7_aEXUXQbxnMblA57p280ajsglF4advoam0kZgLVewOvop0xmg/exec", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dados)
+      });
+
+      if(res.ok){
+          alert("Enviado com sucesso!");
+      } else {
+          const json = await res.json().catch(() => ({}));
+          throw new Error(json.message || "Erro no servidor");
+      }
+
+  } catch (err) {
+      alert("Erro ao enviar: " + err.message);
+      btn.disabled = false;
+  }
 
   btn.innerText="FINALIZAR";
   enviando=false;
