@@ -9,21 +9,28 @@ body{font-family:Arial;background:#0f172a;color:white;margin:0}
 .container{max-width:900px;margin:auto;padding:20px}
 .card{background:#1e293b;padding:20px;border-radius:10px}
 input,select{width:100%;padding:12px;margin-bottom:10px;border-radius:6px;border:none}
-button{background:#22c55e;padding:14px;border:none;border-radius:6px;width:100%;font-weight:bold}
-button:disabled{opacity:0.5}
-#boxTermo{max-height:200px;overflow:auto;background:#0f172a;padding:10px}
+button{background:#22c55e;padding:14px;border:none;border-radius:6px;width:100%;font-weight:bold;cursor:pointer}
+button:disabled{opacity:0.5;cursor:default}
+#boxTermo{max-height:200px;overflow:auto;background:#0f172a;padding:10px;border:1px solid #333}
 </style>
 </head>
 <body>
-
 <div class="container">
 <div class="card">
 <h3>Ficha de Inscrição</h3>
 
+<input type="hidden" id="contratoID" value="12345">
+
 <input id="nome" placeholder="Nome completo" style="text-transform: uppercase;">
 <input id="email" placeholder="Email" style="text-transform: lowercase;">
 <input id="celular" placeholder="Celular" oninput="formatarCelular(this)">
-
+<input id="cpf" maxlength="14" placeholder="CPF" onkeyup="formatarCPF(this)">
+<input id="rg" placeholder="RG">
+<input id="orgao" placeholder="Órgão emissor (ex: SSP/SP)" onkeyup="this.value=this.value.toUpperCase()">
+<input id="dataRg" maxlength="10" placeholder="Data emissão RG" onkeyup="formatarData(this)">
+<input id="nascimento" maxlength="10" placeholder="Data de nascimento" onkeyup="formatarData(this)">
+<input id="cidadeNascimento" placeholder="Cidade de nascimento">
+<input id="curso">
 <select id="curso">
 <option value="">Selecione o curso</option>
 <option>Transporte Coletivo de Passageiros</option>
@@ -48,19 +55,13 @@ button:disabled{opacity:0.5}
 <option>Atualização</option>
 </select>
 
-<input id="cpf" maxlength="14" placeholder="CPF" onkeyup="formatarCPF(this)">
-<input id="rg" placeholder="RG">
-<input id="orgao" placeholder="Órgão emissor (ex: SSP/SP)" onkeyup="this.value=this.value.toUpperCase()">
-<input id="dataRg" maxlength="10" placeholder="Data emissão RG" onkeyup="formatarData(this)">
-<input id="nascimento" maxlength="10" placeholder="Data de nascimento" onkeyup="formatarData(this)">
-<input id="cidadeNascimento" placeholder="Cidade de nascimento">
-<input id="categoriaCNH" placeholder="Categoria CNH" onkeyup="this.value=this.value.toUpperCase()">
 <select id="sexo">
 <option value="">Sexo</option>
 <option>Masculino</option>
 <option>Feminino</option>
 <option>Outros</option>
 </select>
+
 <select id="estadoCivil">
 <option value="">Estado civil</option>
 <option>Casado(a)</option>
@@ -68,6 +69,7 @@ button:disabled{opacity:0.5}
 <option>Separado(a)</option>
 <option>Outros</option>
 </select>
+
 <input id="cep" maxlength="9" placeholder="CEP" onkeyup="formatarCEP(this)">
 <input id="endereco" placeholder="Logradouro: Rua/Avenida/Travessa">
 <input id="numero" placeholder="Número">
@@ -77,46 +79,33 @@ button:disabled{opacity:0.5}
 <input id="estado" placeholder="Estado" onkeyup="this.value=this.value.toUpperCase()">
 <input id="mae" placeholder="Nome da mãe">
 <input id="pai" placeholder="Nome do pai">
+<input id="assinatura" placeholder="Assinatura">
 
- 
 <h3>Termo</h3>
 <div id="boxTermo">
 <p>Leia até o final para liberar o aceite...</p>
-<h3>Termo e Declaração</h3>
-<p>Declaro ter conhecimento e aceitar as exigências contidas na Resolução 789, de 18 de junho de 2020, referente aos cursos especializados para condutores.</p>
-<p><b>REQUISITOS</b></p>
+<p><b>Declaração e requisitos</b></p>
 <ul>
 <li>Ser maior de 21 anos</li>
 <li>Para atualização, ter realizado anteriormente o curso de formação</li>
 <li>Não estar cumprindo suspensão ou cassação da CNH</li>
 <li>Não estar impedido judicialmente de exercer o direito de dirigir</li>
 </ul>
-<p><b>MULTAS</b></p>
-<p>O aluno declara estar ciente de que a plataforma poderá ter dificuldades para atualização na Base de Condutores Atualizada (BCA) caso existam infrações gravíssimas nos últimos 12 meses ou infração auto suspensiva.</p>
-<p><b>INFORMAÇÕES IMPORTANTES</b></p>
-<p>A empresa Grupo 3S atua na área de treinamento profissional e gerencial, com cursos livres e parcerias com plataformas EAD especializadas. Caso o aluno realize curso de formação (50h), presencial ou online, deverá realizar prova eletrônica no DETRAN de origem da CNH.</p>
-<p><b>REEMBOLSO</b></p>
-<p>Não haverá restituição do valor pago caso o aluno desista após iniciar o curso ou tenha bloqueios na CNH.</p>
-<p><b>RESPONSABILIDADE DO DECLARANTE</b></p>
-<p>Declaro, sob as penas da lei, que todas as informações prestadas são verdadeiras, assumindo total responsabilidade por sua veracidade.</p>
-<p><b>PROTEÇÃO DE DADOS (LGPD)</b></p>
-<p>Nos termos da Lei nº 13.709/2018 (LGPD), o aluno autoriza o tratamento de seus dados pessoais pela empresa Grupo 3S.</p>
-<p><b>ACEITE ELETRÔNICO</b></p>
-<p>Declaro que li, compreendi e concordo com todos os termos desta declaração, sendo o aceite realizado por meio eletrônico.</p>
-<p style="margin-top:300px;">Fim do termo</p>
+<p><b>LGPD e responsabilidades</b></p>
+<p>Declaro que todas as informações prestadas são verdadeiras e autorizo o tratamento de meus dados pessoais.</p>
+<p style="margin-top:200px;">Fim do termo</p>
 </div>
 
 <label>
 <input type="checkbox" id="aceite" disabled> Aceito os termos
 </label>
 
-<input id="assinatura" placeholder="Assinatura">
 <button id="btn" disabled>FINALIZAR</button>
 </div>
 </div>
 
 <script>
-// ===== MÁSCARAS =====
+// ===== Máscaras =====
 function formatarCPF(el){
  let v=el.value.replace(/\D/g,"");
  v=v.replace(/(\d{3})(\d)/,"$1.$2");
@@ -141,14 +130,14 @@ function formatarCEP(el){
  if(v.length>5)v=v.slice(0,5)+'-'+v.slice(5,8);
  el.value=v;
 }
-// ===== UTIL =====
+// ===== Util =====
 function get(id){ const el=document.getElementById(id); return el ? el.value : ""; }
 // ===== IP =====
 async function pegarIP(){
  try{ const res=await fetch("https://api.ipify.org?format=json"); const data=await res.json(); return data.ip; }
- catch{ return "0.0.0.0"; }
+ catch{return "0.0.0.0";}
 }
-// ===== BUSCA ENDEREÇO PELO CEP =====
+// ===== Buscar CEP =====
 async function buscarEnderecoPorCEP(cep){
  cep=cep.replace(/\D/g,"");
  if(cep.length!==8) return;
@@ -164,42 +153,35 @@ async function buscarEnderecoPorCEP(cep){
  }catch(err){ console.error("Erro ao buscar CEP:", err); }
 }
 document.getElementById("cep").addEventListener("blur",(e)=>{ buscarEnderecoPorCEP(e.target.value); });
-// ===== HASH =====
+
+// ===== Hash =====
 async function gerarHash(texto){
- try{
-  const encoder=new TextEncoder();
-  const data=encoder.encode(texto);
-  const hashBuffer=await crypto.subtle.digest("SHA-256",data);
-  const hashArray=Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b=>b.toString(16).padStart(2,"0")).join("");
- }catch{return "erro_hash";}
+ const encoder=new TextEncoder();
+ const data=encoder.encode(texto);
+ const hashBuffer=await crypto.subtle.digest("SHA-256",data);
+ const hashArray=Array.from(new Uint8Array(hashBuffer));
+ return hashArray.map(b=>b.toString(16).padStart(2,"0")).join("");
 }
-// ===== INICIALIZAÇÃO =====
+
+// ===== Inicialização =====
 document.addEventListener("DOMContentLoaded",()=>{
 
  let enviando = false;
-
  const box=document.getElementById("boxTermo");
  const aceite=document.getElementById("aceite");
  const btn=document.getElementById("btn");
  let liberado=false;
 
  function liberar(){ if(liberado) return; aceite.disabled=false; liberado=true; atualizar(); }
-
  box.addEventListener("scroll",()=>{ if(box.scrollTop + box.clientHeight >= box.scrollHeight-5) liberar(); });
  box.addEventListener("touchend",liberar);
  box.addEventListener("click",liberar);
 
  function valido(){
   if(!get("email").includes("@")) return false;
-  if(get("cpf").length < 14) return false;
-  if(get("celular").length < 14) return false;
-  if(!get("cpf")) return false;
-  if(!get("curso")) return false;
-  if(!get("tipo")) return false;
-  if(!get("assinatura")) return false;
-  if(!get("nascimento")) return false;
-  if(!get("cep")) return false;
+  if(get("cpf").length<14) return false;
+  if(get("celular").length<14) return false;
+  if(!get("cpf")||!get("curso")||!get("tipo")||!get("assinatura")||!get("nascimento")||!get("cep")) return false;
   if(!aceite.checked) return false;
   return true;
  }
@@ -208,17 +190,16 @@ document.addEventListener("DOMContentLoaded",()=>{
  document.addEventListener("input",atualizar);
  aceite.addEventListener("change",atualizar);
 
-btn.addEventListener("click",async()=>{
+ btn.addEventListener("click",async()=>{
+  if(enviando) return;
+  enviando=true;
+  btn.innerText="Enviando...";
+  btn.disabled=true;
 
- if(enviando) return;
- enviando = true;
-
- btn.innerText="Enviando...";
- btn.disabled=true;
- 
   const ip=await pegarIP();
   const baseHash=get("nome")+get("cpf")+ip+navigator.userAgent+screen.width+"x"+screen.height+new Date().toISOString();
   const hash=await gerarHash(baseHash);
+
   const dados={
    contratoID:get("contratoID"),
    dataHora:new Date().toLocaleString(),
@@ -248,33 +229,28 @@ btn.addEventListener("click",async()=>{
    hash:hash,
    assinatura:get("assinatura")
   };
-try{
 
- const res = await fetch("https://script.google.com/macros/s/AKfycbzDI3B67qD_uXhDCoVrmcwzSSjBFbf7Fj8YK5i15H23CruJPm1NIizCdKPDF9RZXvo3Fw/exec",{
-  method:"POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(dados)
-});
+  try{
+   const res = await fetch("https://script.google.com/macros/s/AKfycbzk9lZzs8o_-k0bxuYa7_aEXUXQbxnMblA57p280ajsglF4advoam0kZgLVewOvop0xmg/exec",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(dados)
+   });
 
- if(res.ok){
-  alert("Enviado com sucesso!");
- }else{
-  throw new Error("Erro no servidor");
- }
+   if(res.ok){
+    alert("Enviado com sucesso!");
+   }else throw new Error("Erro no servidor");
 
-}catch{
- alert("Erro ao enviar");
- btn.disabled=false;
-}
+  }catch(err){
+   alert("Erro ao enviar: "+err.message);
+   btn.disabled=false;
+  }
 
-enviando = false;
-btn.innerText="FINALIZAR";
+  btn.innerText="FINALIZAR";
+  enviando=false;
  });
 
 });
 </script>
-
 </body>
 </html>
