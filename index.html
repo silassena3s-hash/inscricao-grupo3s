@@ -89,6 +89,64 @@
 </div>
 
 <script>
+  // const MARGEM_TOPO = 30;
+
+// ==================== MÁSCARAS E FORMATAÇÃO ====================
+function formatarCPF(el){
+  let v = el.value.replace(/\D/g,"");
+  v = v.replace(/(\d{3})(\d)/,"$1.$2");
+  v = v.replace(/(\d{3})(\d)/,"$1.$2");
+  v = v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+  el.value = v;
+}
+
+function formatarCelularInput(el){
+  let v = el.value.replace(/\D/g,"");
+  v = v.replace(/(\d{2})(\d)/,"($1) $2");
+  v = v.replace(/(\d{5})(\d)/,"$1-$2");
+  el.value = v;
+}
+
+function formatarDataInput(el){
+  let v = el.value.replace(/\D/g,"");
+  if(v.length>2) v = v.slice(0,2)+'/'+v.slice(2);
+  if(v.length>5) v = v.slice(0,5)+'/'+v.slice(5,9);
+  el.value = v;
+}
+
+function formatarCEP(el){
+  let v = el.value.replace(/\D/g,"");
+  if(v.length>5) v = v.slice(0,5)+'-'+v.slice(5,8);
+  el.value = v;
+}
+
+// ==================== BUSCA CEP ====================
+const inputCEP = document.getElementById("cep");
+
+function cepValido(cep){ return /^[0-9]{8}$/.test(cep); }
+
+inputCEP.addEventListener("keyup", function(){
+  const cep = this.value.replace(/\D/g,"");
+  if(cep.length === 8) buscarCEP();
+});
+
+async function buscarCEP(){
+  const cep = inputCEP.value.replace(/\D/g,"");
+  if(!cepValido(cep)){ alert("CEP inválido"); return; }
+
+  try{
+    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const data = await res.json();
+    if(data.erro){ alert("CEP não encontrado"); return; }
+
+    document.getElementById("endereco").value = data.logradouro || "";
+    document.getElementById("bairro").value = data.bairro || "";
+    document.getElementById("cidade").value = data.localidade || "";
+    document.getElementById("estado").value = data.uf || "";
+    document.getElementById("numero").focus();
+  }catch{ alert("Erro ao buscar CEP"); }
+}
+
 // pegar valor
 function get(id){
   return document.getElementById(id).value;
