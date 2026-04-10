@@ -313,8 +313,10 @@ try {
   const text = await res.text();
 
   if (text.trim().toLowerCase() === "ok") {
-    alert("Enviado com sucesso!");
-  } else {
+  alert("Enviado com sucesso!");
+
+  document.querySelectorAll("input").forEach(i => i.value = "");
+} else {
     alert("Erro no servidor: " + text);
   }
 
