@@ -144,7 +144,7 @@ try {
 
   const text = await res.text();
 
-  if (text.trim() === "ok") {
+  if (text.trim().toLowerCase() === "ok") {
     alert("Enviado com sucesso!");
   } else {
     alert("Erro no servidor: " + text);
