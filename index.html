@@ -185,20 +185,29 @@ label{
 function formatarCPF(el){
   let v = el.value.replace(/\D/g,"").slice(0,11);
 
-  v = v.replace(/(\d{3})(\d)/,"$1.$2");
-  v = v.replace(/(\d{3})(\d)/,"$1.$2");
-  v = v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+  let result = "";
 
-  el.value = v;
+  for (let i = 0; i < v.length; i++) {
+    result += v[i];
+    if (i === 2 || i === 5) result += ".";
+    if (i === 8) result += "-";
+  }
+
+  el.value = result;
 }
 
 function formatarCelularInput(el){
-  let v = el.value.replace(/\D/g,"");
+  let v = el.value.replace(/\D/g,"").slice(0,11);
 
-  v = v.replace(/^(\d{2})(\d)/g,"($1) $2");
-  v = v.replace(/(\d{5})(\d{4})$/,"$1-$2");
+  if (v.length <= 10) {
+    v = v.replace(/(\d{2})(\d)/, "($1) $2");
+    v = v.replace(/(\d{4})(\d)/, "$1-$2");
+  } else {
+    v = v.replace(/(\d{2})(\d)/, "($1) $2");
+    v = v.replace(/(\d{5})(\d)/, "$1-$2");
+  }
 
-  el.value = v.slice(0,15);
+  el.value = v;
 }
 
 function formatarDataInput(el){
@@ -256,11 +265,10 @@ async function getIP(){
     return "0.0.0.0";
   }
 }
- 
-  window.addEventListener("load", () => {
-  document.querySelectorAll("input").forEach(i => i.value = "");
-});
 
+window.addEventListener("load", () => {
+  document.getElementById("nome").value = "";
+});
   
 const btn = document.getElementById("btn");
 
