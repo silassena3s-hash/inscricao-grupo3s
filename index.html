@@ -7,345 +7,177 @@
 
 <body>
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  font-family:Arial, sans-serif;
-  background:#0f172a;
-  color:white;
-}
-
-header{
-  background:#020617;
-  padding:20px 15px;
-  text-align:center;
-  width:100%;
-}
-
-header h1{
-  font-size:24px;
-  margin-bottom:5px;
-}
-
-header p{
-  font-size:14px;
-  opacity:0.8;
-}
-
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:20px 15px;
-  width:100%;
-}
-
-.card{
-  background:#1e293b;
-  padding:20px;
-  border-radius:10px;
-  width:100%;
-}
-
-input, select{
-  width:100%;
-  padding:12px;
-  margin-bottom:12px;
-  border-radius:6px;
-  border:none;
-  font-size:14px;
-}
-
-button{
-  background:#22c55e;
-  border:none;
-  padding:14px;
-  border-radius:6px;
-  font-weight:bold;
-  cursor:pointer;
-  width:100%;
-}
-
-button:hover{
-  background:#16a34a;
-}
-
-h3{
-  margin-bottom:10px;
-}
-
-label{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-#boxTermo{
-  max-height:200px;
-  overflow-y:auto;
-  background:#0f172a;
-  padding:15px;
-  border-radius:6px;
-  margin-bottom:10px;
-}
-
-@media (max-width:480px){
-  header h1{font-size:20px;}
-  header p{font-size:13px;}
-  .card{padding:15px;}
-}
+body{font-family:Arial;background:#0f172a;color:#fff}
+.container{max-width:800px;margin:auto;padding:20px}
+input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:6px;border:none}
+button{background:#22c55e;color:#000;font-weight:bold;cursor:pointer}
 </style>
 
-<header>
-  <h1>GRUPO 3S</h1>
-  <p>Sistema de Treinamentos</p>
-</header>
-
 <div class="container">
-<div class="card">
 
-<h3>Ficha de Inscrição</h3>
+<h2>Ficha de Inscrição</h2>
 
-<input id="nome" placeholder="Nome completo" onkeyup="this.value=this.value.toUpperCase()">
-<input id="email" placeholder="Email" onkeyup="this.value=this.value.toLowerCase()">
-<input id="celular" maxlength="15" placeholder="Celular" onkeyup="formatarCelularInput(this)">
+<input id="nome" placeholder="Nome">
+<input id="email" placeholder="Email">
+
+<input id="celular" placeholder="Celular">
+<input id="cpf" placeholder="CPF">
+<input id="rg" placeholder="RG">
+
+<input id="orgao" placeholder="Órgão emissor">
+<input id="dataRg" placeholder="Data RG">
+<input id="nascimento" placeholder="Nascimento">
 
 <select id="curso">
-<option value="">Selecione o curso</option>
-<option>Transporte Coletivo de Passageiros</option>
-<option>Transporte Escolar</option>
-<option>Transporte de Emergência</option>
-<option>Transporte de Produtos Perigosos (MOPP)</option>
-<option>Transporte de Cargas Indivisíveis</option>
-<option>NR 06 - EPI</option>
-<option>NR 11 - Operador de Empilhadeira</option>
-<option>NR 12 - Segurança em Máquinas</option>
-<option>NR 20 - Inflamáveis</option>
-<option>NR 35 - Trabalho em Altura</option>
-<option>Direção Defensiva</option>
-<option>Direção Defensiva + Primeiros Socorros</option>
-<option>Primeiros Socorros</option>
-<option>Logística Básica</option>
+  <option value="">Curso</option>
+  <option>NR 35</option>
+  <option>MOPP</option>
 </select>
 
 <select id="tipo">
-<option value="">Selecione o tipo</option>
-<option>Formação</option>
-<option>Atualização</option>
+  <option value="">Tipo</option>
+  <option>Formação</option>
+  <option>Atualização</option>
 </select>
 
-<input id="cpf" maxlength="14" placeholder="CPF" onkeyup="formatarCPF(this)">
-<input id="rg" placeholder="RG">
-<input id="orgao" placeholder="Órgão emissor (ex: SSP/SP)" onkeyup="this.value=this.value.toUpperCase()">
-<input id="dataRg" maxlength="10" placeholder="Data emissão RG" onkeyup="formatarDataInput(this)">
-<input id="nascimento" maxlength="10" placeholder="Data de nascimento" onkeyup="formatarDataInput(this)">
-<input id="cidadeNascimento" placeholder="Cidade de nascimento">
-<input id="categoriaCNH" placeholder="Categoria CNH" onkeyup="this.value=this.value.toUpperCase()">
-<select id="sexo">
-<option value="">Sexo</option>
-<option>Masculino</option>
-<option>Feminino</option>
-<option>Outros</option>
-</select>
-<select id="estadoCivil">
-<option value="">Estado civil</option>
-<option>Casado(a)</option>
-<option>Solteiro(a)</option>
-<option>Separado(a)</option>
-<option>Outros</option>
-</select>
-<input id="cep" maxlength="9" placeholder="CEP" onkeyup="formatarCEP(this)">
-<input id="endereco" placeholder="Logradouro: Rua/Avenida/Travessa">
+<input id="cep" placeholder="CEP">
+<input id="endereco" placeholder="Endereço">
 <input id="numero" placeholder="Número">
-<input id="complemento" placeholder="Complemento: Apto/Bloco/Andar">
 <input id="bairro" placeholder="Bairro">
 <input id="cidade" placeholder="Cidade">
-<input id="estado" placeholder="Estado" onkeyup="this.value=this.value.toUpperCase()">
-<input id="mae" placeholder="Nome da mãe">
-<input id="pai" placeholder="Nome do pai">
+<input id="estado" placeholder="Estado">
 
+<input id="mae" placeholder="Mãe">
+<input id="pai" placeholder="Pai">
 
 <input id="assinatura" placeholder="Assinatura">
-
-<br><br>
 
 <button id="btn">Enviar</button>
 
 </div>
-</div>
 
 <script>
-  // const MARGEM_TOPO = 30;
+document.addEventListener("DOMContentLoaded", () => {
 
-  
-// ==================== MÁSCARAS E FORMATAÇÃO ====================
-function formatarCPF(el){
-  let v = el.value.replace(/\D/g,"").slice(0,11);
+  const $ = (id) => document.getElementById(id);
 
-  let result = "";
-
-  for (let i = 0; i < v.length; i++) {
-    result += v[i];
-    if (i === 2 || i === 5) result += ".";
-    if (i === 8) result += "-";
-  }
-
-  el.value = result;
-}
-
-function formatarCelularInput(el){
-  let v = el.value.replace(/\D/g,"").slice(0,11);
-
-  if (v.length <= 10) {
-    v = v.replace(/(\d{2})(\d)/, "($1) $2");
-    v = v.replace(/(\d{4})(\d)/, "$1-$2");
-  } else {
-    v = v.replace(/(\d{2})(\d)/, "($1) $2");
-    v = v.replace(/(\d{5})(\d)/, "$1-$2");
-  }
-
-  el.value = v;
-}
-
-function formatarDataInput(el){
-  let v = el.value.replace(/\D/g,"");
-  if(v.length>2) v = v.slice(0,2)+'/'+v.slice(2);
-  if(v.length>5) v = v.slice(0,5)+'/'+v.slice(5,9);
-  el.value = v;
-}
-
-function formatarCEP(el){
-  let v = el.value.replace(/\D/g,"").slice(0,8);
-  v = v.replace(/(\d{5})(\d)/,"$1-$2");
-  el.value = v;
-}
-
-// ==================== BUSCA CEP ====================
-const inputCEP = document.getElementById("cep");
-
-function cepValido(cep){ return /^[0-9]{8}$/.test(cep); }
-
-inputCEP.addEventListener("keyup", function(){
-  const cep = this.value.replace(/\D/g,"");
-  if(cep.length === 8) buscarCEP();
-});
-
-async function buscarCEP(){
-  const cep = inputCEP.value.replace(/\D/g,"");
-  if(!cepValido(cep)){ alert("CEP inválido"); return; }
-
-  try{
-    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-    const data = await res.json();
-    if(data.erro){ alert("CEP não encontrado"); return; }
-
-    document.getElementById("endereco").value = data.logradouro || "";
-    document.getElementById("bairro").value = data.bairro || "";
-    document.getElementById("cidade").value = data.localidade || "";
-    document.getElementById("estado").value = data.uf || "";
-    document.getElementById("numero").focus();
-  }catch{ alert("Erro ao buscar CEP"); }
-}
-
-// pegar valor
-function get(id){
-  return document.getElementById(id).value;
-}
-
-// IP
-async function getIP(){
-  try {
-    const r = await fetch("https://api.ipify.org?format=json");
-    const d = await r.json();
-    return d.ip;
-  } catch {
-    return "0.0.0.0";
-  }
-}
-
-window.addEventListener("load", () => {
-  document.getElementById("nome").value = "";
-});
-  
-const btn = document.getElementById("btn");
-
-btn.addEventListener("click", async () => {
-
-  // 🔴 validação (ANTES de tudo)
-  if (!get("nome") || !get("cpf") || !get("email")) {
-    alert("Preencha os campos obrigatórios");
-    return;
-  }
-
-  if (!get("curso") || !get("tipo")) {
-    alert("Selecione curso e tipo");
-    return;
-  }
-
-  btn.innerText = "Enviando...";
-  btn.disabled = true;
-
-  const dados = {
-    nome: get("nome"),
-    email: get("email"),
-    celular: get("celular"),
-    cpf: get("cpf"),
-    rg: get("rg"),
-    orgao: get("orgao"),
-    dataRg: get("dataRg"),
-    nascimento: get("nascimento"),
-    cidadeNascimento: get("cidadeNascimento"),
-    curso: get("curso"),
-    tipo: get("tipo"),
-    sexo: get("sexo"),
-    estadoCivil: get("estadoCivil"),
-    cep: get("cep"),
-    endereco: get("endereco"),
-    numero: get("numero"),
-    complemento: get("complemento"),
-    bairro: get("bairro"),
-    cidade: get("cidade"),
-    estado: get("estado"),
-    mae: get("mae"),
-    pai: get("pai"),
-    assinatura: get("assinatura"),
-    ip: await getIP(),
-    dataHora: new Date().toLocaleString()
-  };
-
-
-
-const formData = new URLSearchParams();
-
-for (let key in dados) {
-  formData.append(key, dados[key]);
-}
-  
-try {
-  const res = await fetch("https://script.google.com/macros/s/AKfycbyz0vmOIC_4Q50qukRUrWF_kw3KyI3ET4EDEdsPQQYavOvPfkcHWMDaZfg2oymzK4eF4g/exec", {
-    method: "POST",
-    body: formData
+  // ===== MÁSCARAS =====
+  $("cpf").addEventListener("input", e => {
+    let v = e.target.value.replace(/\D/g,"").slice(0,11);
+    v = v.replace(/(\d{3})(\d)/,"$1.$2");
+    v = v.replace(/(\d{3})(\d)/,"$1.$2");
+    v = v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+    e.target.value = v;
   });
 
-  const text = await res.text();
+  $("celular").addEventListener("input", e => {
+    let v = e.target.value.replace(/\D/g,"").slice(0,11);
 
-  if (text.trim().toLowerCase() === "ok") {
-    alert("Enviado com sucesso!");
-    document.querySelectorAll("input, select").forEach(i => i.value = "");
-  } else {
-    alert("Erro no servidor: " + text);
+    if(v.length <= 10){
+      v = v.replace(/(\d{2})(\d)/,"($1) $2");
+      v = v.replace(/(\d{4})(\d)/,"$1-$2");
+    } else {
+      v = v.replace(/(\d{2})(\d)/,"($1) $2");
+      v = v.replace(/(\d{5})(\d)/,"$1-$2");
+    }
+
+    e.target.value = v;
+  });
+
+  $("cep").addEventListener("input", e => {
+    let v = e.target.value.replace(/\D/g,"").slice(0,8);
+    e.target.value = v.replace(/(\d{5})(\d)/,"$1-$2");
+  });
+
+  // ===== CEP AUTO =====
+  $("cep").addEventListener("blur", async () => {
+    let cep = $("cep").value.replace(/\D/g,"");
+    if(cep.length !== 8) return;
+
+    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const data = await res.json();
+
+    if(!data.erro){
+      $("endereco").value = data.logradouro || "";
+      $("bairro").value = data.bairro || "";
+      $("cidade").value = data.localidade || "";
+      $("estado").value = data.uf || "";
+    }
+  });
+
+  // ===== IP =====
+  async function getIP(){
+    try {
+      const r = await fetch("https://api.ipify.org?format=json");
+      const d = await r.json();
+      return d.ip;
+    } catch {
+      return "0.0.0.0";
+    }
   }
 
-} catch (err) {
-  alert("Erro de rede: " + err.message);
+  // ===== ENVIO =====
+  $("btn").addEventListener("click", async () => {
 
-} finally {
-  btn.innerText = "Enviar";
-  btn.disabled = false;
-}
+    if(!$("nome").value || !$("cpf").value || !$("email").value){
+      alert("Preencha os campos obrigatórios");
+      return;
+    }
+
+    $("btn").innerText = "Enviando...";
+    $("btn").disabled = true;
+
+    const dados = {
+      dataHora: new Date().toLocaleString(),
+      nome: $("nome").value,
+      email: $("email").value,
+      celular: $("celular").value,
+      cpf: $("cpf").value,
+      rg: $("rg").value,
+      orgao: $("orgao").value,
+      dataRg: $("dataRg").value,
+      nascimento: $("nascimento").value,
+      curso: $("curso").value,
+      tipo: $("tipo").value,
+      cep: $("cep").value,
+      endereco: $("endereco").value,
+      numero: $("numero").value,
+      bairro: $("bairro").value,
+      cidade: $("cidade").value,
+      estado: $("estado").value,
+      mae: $("mae").value,
+      pai: $("pai").value,
+      assinatura: $("assinatura").value,
+      ip: await getIP()
+    };
+
+    const form = new URLSearchParams();
+    Object.keys(dados).forEach(k => form.append(k, dados[k]));
+
+    try {
+      const res = await fetch("https://script.google.com/macros/s/AKfycbyWiCs4Ou-ZYKHjYpl-H7V3wdL-h7CoxvLYq73Nh6kDez3ep4dB4leztNILXm0Rq6eZYg/exec", {
+        method: "POST",
+        body: form
+      });
+
+      const text = await res.text();
+
+      if(text === "ok"){
+        alert("Enviado com sucesso!");
+        document.querySelectorAll("input").forEach(i => i.value = "");
+      } else {
+        alert("Erro: " + text);
+      }
+
+    } catch (err) {
+      alert("Erro de rede: " + err.message);
+    }
+
+    $("btn").innerText = "Enviar";
+    $("btn").disabled = false;
+  });
+
+});
 </script>
 
 </body>
