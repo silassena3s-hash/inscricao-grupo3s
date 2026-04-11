@@ -57,128 +57,170 @@ button{background:#22c55e;color:#000;font-weight:bold;cursor:pointer}
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
 
-  const $ = (id) => document.getElementById(id);
+// ===== MÁSCARAS =====
 
-  // ===== MÁSCARAS =====
-  $("cpf").addEventListener("input", e => {
-    let v = e.target.value.replace(/\D/g,"").slice(0,11);
-    v = v.replace(/(\d{3})(\d)/,"$1.$2");
-    v = v.replace(/(\d{3})(\d)/,"$1.$2");
-    v = v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
-    e.target.value = v;
-  });
+function somenteNumeros(v) {
+  return v.replace(/\D/g, "");
+}
 
-  $("celular").addEventListener("input", e => {
-    let v = e.target.value.replace(/\D/g,"").slice(0,11);
+function formatarCPF(el){
+  let v = somenteNumeros(el.value).slice(0,11);
 
-    if(v.length <= 10){
-      v = v.replace(/(\d{2})(\d)/,"($1) $2");
-      v = v.replace(/(\d{4})(\d)/,"$1-$2");
-    } else {
-      v = v.replace(/(\d{2})(\d)/,"($1) $2");
-      v = v.replace(/(\d{5})(\d)/,"$1-$2");
-    }
+  if(v.length > 9){
+    v = v.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, "$1.$2.$3-$4");
+  } else if(v.length > 6){
+    v = v.replace(/(\d{3})(\d{3})(\d+)/, "$1.$2.$3");
+  } else if(v.length > 3){
+    v = v.replace(/(\d{3})(\d+)/, "$1.$2");
+  }
 
-    e.target.value = v;
-  });
+  el.value = v;
+}
 
-  $("cep").addEventListener("input", e => {
-    let v = e.target.value.replace(/\D/g,"").slice(0,8);
-    e.target.value = v.replace(/(\d{5})(\d)/,"$1-$2");
-  });
+function formatarCelular(el){
+  let v = somenteNumeros(el.value).slice(0,11);
 
-  // ===== CEP AUTO =====
-  $("cep").addEventListener("blur", async () => {
-    let cep = $("cep").value.replace(/\D/g,"");
-    if(cep.length !== 8) return;
+  if(v.length > 6){
+    v = v.replace(/(\d{2})(\d{5})(\d+)/, "($1) $2-$3");
+  } else if(v.length > 2){
+    v = v.replace(/(\d{2})(\d+)/, "($1) $2");
+  }
 
+  el.value = v;
+}
+
+function formatarData(el){
+  let v = somenteNumeros(el.value).slice(0,8);
+
+  if(v.length > 4){
+    v = v.replace(/(\d{2})(\d{2})(\d+)/, "$1/$2/$3");
+  } else if(v.length > 2){
+    v = v.replace(/(\d{2})(\d+)/, "$1/$2");
+  }
+
+  el.value = v;
+}
+
+function formatarCEP(el){
+  let v = somenteNumeros(el.value).slice(0,8);
+
+  if(v.length > 5){
+    v = v.replace(/(\d{5})(\d+)/, "$1-$2");
+  }
+
+  el.value = v;
+}
+
+// ===== BUSCAR CEP =====
+
+async function buscarCEP(){
+  const cep = somenteNumeros(document.getElementById("cep").value);
+
+  if(cep.length !== 8) return;
+
+  try{
     const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
     const data = await res.json();
 
-    if(!data.erro){
-      $("endereco").value = data.logradouro || "";
-      $("bairro").value = data.bairro || "";
-      $("cidade").value = data.localidade || "";
-      $("estado").value = data.uf || "";
-    }
-  });
-
-  // ===== IP =====
-  async function getIP(){
-    try {
-      const r = await fetch("https://api.ipify.org?format=json");
-      const d = await r.json();
-      return d.ip;
-    } catch {
-      return "0.0.0.0";
-    }
-  }
-
-  // ===== ENVIO =====
-  $("btn").addEventListener("click", async () => {
-
-    if(!$("nome").value || !$("cpf").value || !$("email").value){
-      alert("Preencha os campos obrigatórios");
+    if(data.erro){
+      alert("CEP não encontrado");
       return;
     }
 
-    $("btn").innerText = "Enviando...";
-    $("btn").disabled = true;
+    document.getElementById("endereco").value = data.logradouro;
+    document.getElementById("bairro").value = data.bairro;
+    document.getElementById("cidade").value = data.localidade;
+    document.getElementById("estado").value = data.uf;
 
-    const dados = {
-      dataHora: new Date().toLocaleString(),
-      nome: $("nome").value,
-      email: $("email").value,
-      celular: $("celular").value,
-      cpf: $("cpf").value,
-      rg: $("rg").value,
-      orgao: $("orgao").value,
-      dataRg: $("dataRg").value,
-      nascimento: $("nascimento").value,
-      curso: $("curso").value,
-      tipo: $("tipo").value,
-      cep: $("cep").value,
-      endereco: $("endereco").value,
-      numero: $("numero").value,
-      bairro: $("bairro").value,
-      cidade: $("cidade").value,
-      estado: $("estado").value,
-      mae: $("mae").value,
-      pai: $("pai").value,
-      assinatura: $("assinatura").value,
-      ip: await getIP()
-    };
+  } catch {
+    alert("Erro ao buscar CEP");
+  }
+}
 
-    const form = new URLSearchParams();
-    Object.keys(dados).forEach(k => form.append(k, dados[k]));
+// ===== PEGAR DADOS =====
 
-    try {
-      const res = await fetch("https://script.google.com/macros/s/AKfycbyWiCs4Ou-ZYKHjYpl-H7V3wdL-h7CoxvLYq73Nh6kDez3ep4dB4leztNILXm0Rq6eZYg/exec", {
-        method: "POST",
-        body: form
-      });
+function get(id){
+  return document.getElementById(id).value;
+}
 
-      const text = await res.text();
+// ===== IP =====
 
-      if(text === "ok"){
-        alert("Enviado com sucesso!");
-        document.querySelectorAll("input").forEach(i => i.value = "");
-      } else {
-        alert("Erro: " + text);
-      }
+async function getIP(){
+  try {
+    const r = await fetch("https://api.ipify.org?format=json");
+    const d = await r.json();
+    return d.ip;
+  } catch {
+    return "0.0.0.0";
+  }
+}
 
-    } catch (err) {
-      alert("Erro de rede: " + err.message);
+// ===== ENVIO =====
+
+document.getElementById("btn").addEventListener("click", async () => {
+
+  if (!get("nome") || !get("cpf") || !get("email")) {
+    alert("Preencha os campos obrigatórios");
+    return;
+  }
+
+  const btn = document.getElementById("btn");
+  btn.innerText = "Enviando...";
+  btn.disabled = true;
+
+  const dados = {
+    nome: get("nome"),
+    email: get("email"),
+    celular: get("celular"),
+    cpf: get("cpf"),
+    rg: get("rg"),
+    orgao: get("orgao"),
+    dataRg: get("dataRg"),
+    nascimento: get("nascimento"),
+    cidadeNascimento: get("cidadeNascimento"),
+    curso: get("curso"),
+    tipo: get("tipo"),
+    sexo: get("sexo"),
+    estadoCivil: get("estadoCivil"),
+    cep: get("cep"),
+    endereco: get("endereco"),
+    numero: get("numero"),
+    complemento: get("complemento"),
+    bairro: get("bairro"),
+    cidade: get("cidade"),
+    estado: get("estado"),
+    mae: get("mae"),
+    pai: get("pai"),
+    assinatura: get("assinatura"),
+    ip: await getIP(),
+    dataHora: new Date().toLocaleString()
+  };
+
+  const formData = new URLSearchParams(dados);
+
+  try {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbzumQY-P9irAdKmAAqhR72BIM22HMk853Wfvnj4pbijjgYL62gOBpfTLvWuiWNt5nXDCQ/exec", {
+      method: "POST",
+      body: formData
+    });
+
+    const text = await res.text();
+
+    if(text.trim().toLowerCase() === "ok"){
+      alert("Enviado com sucesso!");
+    } else {
+      alert("Erro no servidor");
     }
 
-    $("btn").innerText = "Enviar";
-    $("btn").disabled = false;
-  });
+  } catch {
+    alert("Erro de conexão");
+  }
 
+  btn.innerText = "Enviar";
+  btn.disabled = false;
 });
-</script>
 
+</script>
 </body>
 </html>
