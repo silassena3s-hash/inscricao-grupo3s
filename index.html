@@ -104,17 +104,14 @@ label{
   <p>Sistema de Treinamentos</p>
 </header>
 
-<h2>Cadastro</h2>
-
 <div class="container">
 <div class="card">
 
 <h3>Ficha de Inscrição</h3>
 
-<input id="nome" placeholder="Nome completo">
-<input id="email" placeholder="Email">
+<input id="nome" placeholder="Nome completo" onkeyup="this.value=this.value.toUpperCase()">
+<input id="email" placeholder="Email" onkeyup="this.value=this.value.toLowerCase()">
 <input id="celular" maxlength="15" placeholder="Celular" onkeyup="formatarCelularInput(this)">
-
 
 <select id="curso">
 <option value="">Selecione o curso</option>
@@ -182,7 +179,9 @@ label{
 
 <script>
   // const MARGEM_TOPO = 30;
-
+  
+const contratoId = "CTR-" + Utilities.formatDate(new Date(), "GMT-3", "yyyyMMdd-HHmmss");
+  
 // ==================== MÁSCARAS E FORMATAÇÃO ====================
 function formatarCPF(el){
   let v = el.value.replace(/\D/g,"");
