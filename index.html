@@ -109,38 +109,85 @@ label{
 
 <h3>Ficha de Inscrição</h3>
 
-<input id="nome" placeholder="Nome completo">
+<input id="nome" placeholder="Nome completo" onkeyup="this.value=this.value.toUpperCase()">
+
 <input id="email" placeholder="Email">
 
-<input id="celular" maxlength="15" placeholder="Celular">
+<input id="celular" placeholder="Celular" onkeyup="this.value=formatarCelular(this.value)">
+
 
 <select id="curso">
-  <option value="">Selecione o curso</option>
-  <option>Transporte Coletivo de Passageiros</option>
-  <option>Transporte Escolar</option>
-  <option>NR 35 - Trabalho em Altura</option>
+<option value="">Selecione o curso</option>
+<option>Transporte Coletivo de Passageiros</option>
+<option>Transporte Escolar</option>
+<option>Transporte de Emergência</option>
+<option>Transporte de Produtos Perigosos (MOPP)</option>
+<option>Transporte de Cargas Indivisíveis</option>
+
+
+<option>NR 06 - EPI</option>
+<option>NR 11 - Operador de Empilhadeira</option>
+<option>NR 12 - Segurança em Máquinas</option>
+<option>NR 20 - Inflamáveis</option>
+<option>NR 35 - Trabalho em Altura</option>
+
+
+<option>Direção Defensiva</option>
+<option>Direção Defensiva + Primeiros Socorros</option>
+<option>Primeiros Socorros</option>
+<option>Logística Básica</option>
 </select>
+
+
 
 <select id="tipo">
-  <option value="">Selecione o tipo</option>
-  <option>Formação</option>
-  <option>Atualização</option>
+<option value="">Selecione o tipo</option>
+<option>Formação</option>
+<option>Atualização</option>
 </select>
 
-<input id="cpf" maxlength="14" placeholder="CPF">
+
+
 <input id="rg" placeholder="RG">
-<input id="orgao" placeholder="Órgão emissor">
+<input id="orgao" placeholder="Órgão emissor (ex: SP)">
+<input type="date" id="dataRg">
 
-<input id="dataRg" maxlength="10" placeholder="Data emissão RG">
-<input id="nascimento" maxlength="10" placeholder="Data nascimento">
 
-<input id="cep" maxlength="9" placeholder="CEP">
+<input id="cpf" placeholder="CPF" onkeyup="this.value=formatarCPF(this.value)">
 
-<input id="endereco" placeholder="Endereço">
+
+<input type="date" id="nascimento">
+<input id="cidadeNascimento" placeholder="Cidade de nascimento">
+
+
+<input id="registroCNH" placeholder="Registro CNH">
+<input id="categoriaCNH" placeholder="Categoria CNH">
+
+
+<select id="sexo">
+<option value="">Sexo</option>
+<option>Masculino</option>
+<option>Feminino</option>
+<option>Outros</option>
+</select>
+
+
+<select id="estadoCivil">
+<option value="">Estado civil</option>
+<option>Casado(a)</option>
+<option>Solteiro(a)</option>
+<option>Separado(a)</option>
+<option>Outros</option>
+</select>
+
+
+<input id="endereco" placeholder="Rua">
 <input id="numero" placeholder="Número">
+<input id="cep" placeholder="CEP">
 <input id="bairro" placeholder="Bairro">
 <input id="cidade" placeholder="Cidade">
 <input id="estado" placeholder="Estado">
+
 
 <input id="mae" placeholder="Nome da mãe">
 <input id="pai" placeholder="Nome do pai">
@@ -296,20 +343,21 @@ document.getElementById("btn").addEventListener("click", async () => {
   const formData = new URLSearchParams(dados);
 
   try {
-    const res = await fetch("https://script.google.com/macros/s/AKfycbzumQY-P9irAdKmAAqhR72BIM22HMk853Wfvnj4pbijjgYL62gOBpfTLvWuiWNt5nXDCQ/exec", {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbwXl1HQXlgBmv61R_6cTCC6OIpshJJBy3gyInK8R4SFJcYMdC_4xUxEN2KoWAK0zRryOQ/exec", {
   method: "POST",
   body: formData,
-  mode: "no-cors"
+mode: "cors"
 });
 
 
 
     const text = await res.text();
 
-    if(text.trim().toLowerCase() === "ok"){
- alert("Enviado com sucesso!");
-
-} catch (err) {
+if(text.includes("http")){
+  alert("Enviado! Baixando PDF...");
+  window.open(text, "_blank");
+} 
+ catch (err) {
   alert("Erro de rede");
 }
 
