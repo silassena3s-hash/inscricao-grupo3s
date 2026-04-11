@@ -183,18 +183,22 @@ label{
   
 // ==================== MÁSCARAS E FORMATAÇÃO ====================
 function formatarCPF(el){
-  let v = el.value.replace(/\D/g,"");
+  let v = el.value.replace(/\D/g,"").slice(0,11);
+
   v = v.replace(/(\d{3})(\d)/,"$1.$2");
   v = v.replace(/(\d{3})(\d)/,"$1.$2");
   v = v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+
   el.value = v;
 }
 
 function formatarCelularInput(el){
   let v = el.value.replace(/\D/g,"");
-  v = v.replace(/(\d{2})(\d)/,"($1) $2");
-  v = v.replace(/(\d{5})(\d)/,"$1-$2");
-  el.value = v;
+
+  v = v.replace(/^(\d{2})(\d)/g,"($1) $2");
+  v = v.replace(/(\d{5})(\d{4})$/,"$1-$2");
+
+  el.value = v.slice(0,15);
 }
 
 function formatarDataInput(el){
@@ -205,8 +209,8 @@ function formatarDataInput(el){
 }
 
 function formatarCEP(el){
-  let v = el.value.replace(/\D/g,"");
-  if(v.length>5) v = v.slice(0,5)+'-'+v.slice(5,8);
+  let v = el.value.replace(/\D/g,"").slice(0,8);
+  v = v.replace(/(\d{5})(\d)/,"$1-$2");
   el.value = v;
 }
 
@@ -253,7 +257,10 @@ async function getIP(){
   }
 }
  
+  window.addEventListener("load", () => {
   document.querySelectorAll("input").forEach(i => i.value = "");
+});
+
   
 const btn = document.getElementById("btn");
 
@@ -310,7 +317,7 @@ for (let key in dados) {
 }
   
 try {
-  const res = await fetch("https://script.google.com/macros/s/AKfycbwYoV8flxMKnOpjeD9u7UCk2_7YG3hJ2ah4NnSsSG9HSIt6Y6UfdrgaTiC-02sQlLMEGg/exec/exec", {
+  const res = await fetch("https://script.google.com/macros/s/AKfycbwYoV8flxMKnOpjeD9u7UCk2_7YG3hJ2ah4NnSsSG9HSIt6Y6UfdrgaTiC-02sQlLMEGg/exec", {
     method: "POST",
     body: formData
   });
