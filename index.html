@@ -179,8 +179,7 @@ label{
 
 <script>
   // const MARGEM_TOPO = 30;
-  
-const contratoId = "CTR-" + Utilities.formatDate(new Date(), "GMT-3", "yyyyMMdd-HHmmss");
+
   
 // ==================== MÁSCARAS E FORMATAÇÃO ====================
 function formatarCPF(el){
@@ -260,8 +259,14 @@ const btn = document.getElementById("btn");
 
 btn.addEventListener("click", async () => {
 
+  // 🔴 validação (ANTES de tudo)
   if (!get("nome") || !get("cpf") || !get("email")) {
     alert("Preencha os campos obrigatórios");
+    return;
+  }
+
+  if (!get("curso") || !get("tipo")) {
+    alert("Selecione curso e tipo");
     return;
   }
 
@@ -303,6 +308,7 @@ const formData = new URLSearchParams();
 for (let key in dados) {
   formData.append(key, dados[key]);
 }
+  
 try {
   const res = await fetch("https://script.google.com/macros/s/AKfycbyHzYp_qTf_n9Kucnh7HDODU5mkehkyyXf2c0XUkmDkFHQ_SIaFsGkVH1OiQyBhmSbLJg/exec", {
     method: "POST",
@@ -312,22 +318,19 @@ try {
   const text = await res.text();
 
   if (text.trim().toLowerCase() === "ok") {
-  alert("Enviado com sucesso!");
-
-  document.querySelectorAll("input").forEach(i => i.value = "");
-} else {
+    alert("Enviado com sucesso!");
+    document.querySelectorAll("input, select").forEach(i => i.value = "");
+  } else {
     alert("Erro no servidor: " + text);
   }
 
 } catch (err) {
   alert("Erro de rede: " + err.message);
+
+} finally {
+  btn.innerText = "Enviar";
+  btn.disabled = false;
 }
-
-btn.innerText = "Enviar";
-btn.disabled = false;
-
-});
-
 </script>
 
 </body>
