@@ -293,16 +293,19 @@ async function getIP(){
 
 document.getElementById("btn").addEventListener("click", async () => {
 
+  const btn = document.getElementById("btn");
+
+  
+  if (btn.disabled) return;
+
   if (!get("nome") || !get("cpf") || !get("email")) {
     alert("Preencha os campos obrigatórios");
     return;
   }
 
-  const btn = document.getElementById("btn");
-
-btn.innerText = "Enviando... Aguarde";
-btn.style.opacity = "0.7";
-btn.disabled = true;
+  btn.innerText = "Enviando... Aguarde";
+  btn.style.opacity = "0.7";
+  btn.disabled = true;
 
   const dados = {
     dataHora: new Date().toLocaleString(),
@@ -342,29 +345,29 @@ btn.disabled = true;
   const formData = new URLSearchParams(dados);
 
   try {
-    const res = await fetch("https://script.google.com/macros/s/AKfycbw7EShE_pVx0-Tp9OofHBuyK5NbKHEVEfrCK_O4yg51ipVYadZIEoIbWT8ggZqrt0XV5g/exec", {
-      method: "POST",
-      body: formData,
-      mode: "cors"
-    });
+  const res = await fetch("https://script.google.com/macros/s/AKfycbw7EShE_pVx0-Tp9OofHBuyK5NbKHEVEfrCK_O4yg51ipVYadZIEoIbWT8ggZqrt0XV5g/exec", {
+    method: "POST",
+    body: formData,
+    mode: "cors"
+  });
 
-    const text = await res.text();
+  const json = await res.json();
 
-    if (text.startsWith("http")) {
-      alert("Enviado! Abrindo PDF...");
-      window.open(text, "_blank");
-    } else {
-      alert("Enviado com sucesso!");
-    }
-
-  } catch (err) {
-    alert("Erro de conexão");
+  if (json.status === "ok") {
+    alert("Enviado! Abrindo PDF...");
+    window.open(json.link, "_blank");
+  } else {
+    alert("Erro ao enviar");
   }
 
-  btn.innerText = "Enviar";
-  btn.disabled = false;  
-  btn.style.opacity = "1";
-  
+} catch (err) {
+  alert("Erro de conexão");
+}
+
+btn.innerText = "Enviar";
+btn.disabled = false;  
+btn.style.opacity = "1";
+
 });
 
 </script>
