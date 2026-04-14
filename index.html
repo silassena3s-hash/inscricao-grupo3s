@@ -191,94 +191,12 @@ onkeyup="formatarCelular(this)">
 
 <script>
 
-// ===== MÁSCARAS =====
-
-function somenteNumeros(v) {
-  return v.replace(/\D/g, "");
-}
-
-function formatarCPF(el){
-  let v = somenteNumeros(el.value).slice(0,11);
-
-  if(v.length > 9){
-    v = v.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, "$1.$2.$3-$4");
-  } else if(v.length > 6){
-    v = v.replace(/(\d{3})(\d{3})(\d+)/, "$1.$2.$3");
-  } else if(v.length > 3){
-    v = v.replace(/(\d{3})(\d+)/, "$1.$2");
-  }
-
-  el.value = v;
-}
-
-function formatarCelular(el){
-  let v = somenteNumeros(el.value).slice(0,11);
-
-  if(v.length > 6){
-    v = v.replace(/(\d{2})(\d{5})(\d+)/, "($1) $2-$3");
-  } else if(v.length > 2){
-    v = v.replace(/(\d{2})(\d+)/, "($1) $2");
-  }
-
-  el.value = v;
-}
-
-function formatarData(el){
-  let v = somenteNumeros(el.value).slice(0,8);
-
-  if(v.length > 4){
-    v = v.replace(/(\d{2})(\d{2})(\d+)/, "$1/$2/$3");
-  } else if(v.length > 2){
-    v = v.replace(/(\d{2})(\d+)/, "$1/$2");
-  }
-
-  el.value = v;
-}
-
-function formatarCEP(el){
-  let v = somenteNumeros(el.value).slice(0,8);
-
-  if(v.length > 5){
-    v = v.replace(/(\d{5})(\d+)/, "$1-$2");
-  }
-
-  el.value = v;
-}
-
-// ===== BUSCAR CEP =====
-
-async function buscarCEP(){
-  const cep = somenteNumeros(document.getElementById("cep").value);
-
-  if(cep.length !== 8) return;
-
-  try{
-    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-    const data = await res.json();
-
-    if(data.erro){
-      alert("CEP não encontrado");
-      return;
-    }
-
-    document.getElementById("endereco").value = data.logradouro;
-    document.getElementById("bairro").value = data.bairro;
-    document.getElementById("cidade").value = data.localidade;
-    document.getElementById("estado").value = data.uf;
-
-  } catch {
-    alert("Erro ao buscar CEP");
-  }
-}
-
 // ===== PEGAR DADOS =====
-
 function get(id){
   return document.getElementById(id).value;
 }
 
 // ===== IP =====
-
 async function getIP(){
   try {
     const r = await fetch("https://api.ipify.org?format=json");
@@ -289,15 +207,14 @@ async function getIP(){
   }
 }
 
-// ===== ENVIO =====
-
+// ===== ENVIO FINAL 3S =====
 document.getElementById("btn").addEventListener("click", async () => {
 
   const btn = document.getElementById("btn");
 
-  
   if (btn.disabled) return;
 
+  // validação mínima
   if (!get("nome") || !get("cpf") || !get("email")) {
     alert("Preencha os campos obrigatórios");
     return;
@@ -307,76 +224,76 @@ document.getElementById("btn").addEventListener("click", async () => {
   btn.style.opacity = "0.7";
   btn.disabled = true;
 
-  const dados = {
-    dataHora: new Date().toLocaleString(),
-    ip: await getIP(),
-
-    nome: get("nome"),
-    email: get("email"),
-    celular: get("celular"),
-    cpf: get("cpf"),
-    rg: get("rg"),
-    orgao: get("orgao"),
-    dataRg: get("dataRg"),
-    nascimento: get("nascimento"),
-    cidadeNascimento: get("cidadeNascimento"),
-    sexo: get("sexo"),
-    estadoCivil: get("estadoCivil"),
-    mae: get("mae"),
-    pai: get("pai"),
-
-    cep: get("cep"),
-    endereco: get("endereco"),
-    numero: get("numero"),
-    complemento: get("complemento"),
-    bairro: get("bairro"),
-    cidade: get("cidade"),
-    estado: get("estado"),
-
-    curso: get("curso"),
-    tipo: get("tipo"),
-
-    registroCNH: get("registroCNH"),
-    categoriaCNH: get("categoriaCNH"),
-
-    assinatura: get("assinatura")
-  };
-
-
-  const res = await fetch(URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
-  body: new URLSearchParams(dados)
-});
-
   try {
-  const res = await fetch("https://script.google.com/macros/s/AKfycbw7EShE_pVx0-Tp9OofHBuyK5NbKHEVEfrCK_O4yg51ipVYadZIEoIbWT8ggZqrt0XV5g/exec", {
-    method: "POST",
-    body: formData,
-    mode: "cors"
-  });
 
-  const text = await res.text();
+    const dados = {
+      dataHora: new Date().toLocaleString(),
+      ip: await getIP(),
 
-let json;
+      nome: get("nome"),
+      email: get("email"),
+      celular: get("celular"),
+      cpf: get("cpf"),
+      rg: get("rg"),
+      orgao: get("orgao"),
+      dataRg: get("dataRg"),
+      nascimento: get("nascimento"),
+      cidadeNascimento: get("cidadeNascimento"),
+      sexo: get("sexo"),
+      estadoCivil: get("estadoCivil"),
+      mae: get("mae"),
+      pai: get("pai"),
 
-try {
-  json = JSON.parse(text);
-} catch (e) {
-  console.log("Resposta inválida:", text);
-  alert("Erro no servidor");
-  return;
-}
+      cep: get("cep"),
+      endereco: get("endereco"),
+      numero: get("numero"),
+      complemento: get("complemento"),
+      bairro: get("bairro"),
+      cidade: get("cidade"),
+      estado: get("estado"),
 
-} catch (err) {
-  alert("Erro de conexão");
-}
+      curso: get("curso"),
+      tipo: get("tipo"),
 
-btn.innerText = "Enviar";
-btn.disabled = false;  
-btn.style.opacity = "1";
+      registroCNH: get("registroCNH"),
+      categoriaCNH: get("categoriaCNH"),
+
+      assinatura: get("assinatura")
+    };
+
+    // 🔥 ÚNICO ENVIO (CORRETO)
+    const res = await fetch("https://script.google.com/macros/s/AKfycbw7EShE_pVx0-Tp9OofHBuyK5NbKHEVEfrCK_O4yg51ipVYadZIEoIbWT8ggZqrt0XV5g/exec", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams(dados)
+    });
+
+    const text = await res.text();
+
+    let json;
+    try {
+      json = JSON.parse(text);
+    } catch (e) {
+      console.log("Resposta inválida:", text);
+      alert("Erro no servidor");
+      return;
+    }
+
+    if (json.status === "queued") {
+      alert("Enviado com sucesso! ID: " + json.id);
+    } else {
+      alert("Erro ao enviar");
+    }
+
+  } catch (err) {
+    alert("Erro de conexão");
+  }
+
+  btn.innerText = "Enviar";
+  btn.disabled = false;
+  btn.style.opacity = "1";
 
 });
 
