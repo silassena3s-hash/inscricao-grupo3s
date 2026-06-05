@@ -505,18 +505,24 @@ html =
 function limparFormulario(){
 
   document.querySelectorAll("input").forEach(campo=>{
+
     if(campo.type==="checkbox"){
-      campo.checked=false;
+      campo.checked = false;
     }else{
-      campo.value="";
+      campo.value = "";
     }
+
   });
 
   document.querySelectorAll("select").forEach(sel=>{
-    sel.selectedIndex=0;
+    sel.selectedIndex = 0;
   });
 
-  botao.disabled=true;
+  aceite.disabled = true;
+
+  botao.disabled = true;
+
+  box.scrollTop = 0;
 }
 
 async function consultarCPF(){
@@ -534,7 +540,7 @@ const res = await fetch(
 `https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec?action=cpf&cpf=${cpfLimpo}`
 );
 
-    const encontrados = await res.json();
+const encontrados = await res.json();
 
     if(encontrados.length === 0){
 
@@ -699,7 +705,7 @@ function gerarChaveCadastro(){
   return `cpf_${c}_${cursoSelecionado}_${tipoSelecionado}`;
 }
 
-function jaEnviado(dados){
+function jaEnviado(){
   return localStorage.getItem(gerarChaveCadastro());
 }
 
@@ -744,7 +750,7 @@ async function enviarParaSheets(dados){
   try{
 
     const resposta = await fetch(
-      "https://script.google.com/macros/s/AKfycby0MEsuSHCeTRy9XL6bGlz8aDOntxVbIQtjU5T5rCFiej7up3UYpcEH6piwZvoU3A-J/exec",
+      "https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec",
       {
         method:"POST",
         headers:{
@@ -996,13 +1002,6 @@ y,
 );
 
 y += 20;
-
-doc.text(
-"As informações constantes neste documento foram fornecidas diretamente pelo declarante, mediante preenchimento eletrônico e aceite digital, ficando o mesmo responsável pela veracidade dos dados apresentados.",
-20,y,{maxWidth:170}
-);
-
-y += 20;
 verificarPagina();
 doc.setFont(undefined,"bold");
 doc.text("PROTEÇÃO DE DADOS (LGPD)",20,y);
@@ -1104,7 +1103,7 @@ document.body.removeChild(link);
   // ================= ENVIO =================
   await enviarParaSheets(dados);
 
-  marcarEnviado();
+  marcarEnviado(dados);
 
   alert("Inscrição finalizada com sucesso!");
 
