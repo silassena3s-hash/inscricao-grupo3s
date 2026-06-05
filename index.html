@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Formulário Final</title>
-</head>
+<title>Sistema Grupo 3S</title>
 
-<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
 *{
   margin:0;
@@ -18,7 +18,6 @@ body{
   font-family:Arial, sans-serif;
   background:#0f172a;
   color:white;
--webkit-text-size-adjust: 100%;
 }
 
 header{
@@ -52,17 +51,15 @@ header p{
   width:100%;
 }
 
-/* 🔥 AQUI COMEÇA A PARTE MOBILE ROBUSTA */
-input, select {
-  width: 100%;
-  display: block;
-  padding: 14px;
-  margin-bottom: 12px;
-  border-radius: 6px;
-  border: none;
-  font-size: 16px;
-  box-sizing: border-box;
+input, select{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:6px;
+  border:none;
+  font-size:14px;
 }
+
 button{
   background:#22c55e;
   border:none;
@@ -71,6 +68,7 @@ button{
   font-weight:bold;
   cursor:pointer;
   width:100%;
+  margin-top:12px;
 }
 
 button:hover{
@@ -85,6 +83,12 @@ label{
   display:flex;
   align-items:center;
   gap:10px;
+  margin:15px 0;
+}
+
+#aceite{
+  width:auto;
+  margin:0;
 }
 
 #boxTermo{
@@ -95,17 +99,25 @@ label{
   border-radius:6px;
   margin-bottom:10px;
 }
+#btnFinalizar{
+  margin-bottom:10px;
+}
 
 @media (max-width:480px){
   header h1{font-size:20px;}
   header p{font-size:13px;}
   .card{padding:15px;}
 }
+
+
 </style>
+</head>
+
+<body>
 
 <header>
-  <h1>GRUPO 3S</h1>
-  <p>Sistema de Treinamentos</p>
+<h1>GRUPO 3S</h1>
+<p>Sistema de Treinamentos</p>
 </header>
 
 <div class="container">
@@ -113,191 +125,1021 @@ label{
 
 <h3>Ficha de Inscrição</h3>
 
-<!-- IDENTIFICAÇÃO DO REGISTRO (não precisa input) -->
-
-<!-- DADOS PESSOAIS -->
 <input id="nome" placeholder="Nome completo" onkeyup="this.value=this.value.toUpperCase()">
 <input id="email" placeholder="Email">
-<input id="celular" placeholder="Celular" 
-onkeyup="formatarCelular(this)">
-<input id="cpf" placeholder="CPF" onkeyup="this.value=formatarCPF(this.value)">
-<input id="rg" placeholder="RG">
-<input id="orgao" placeholder="Órgão emissor (ex: SP)">
-<input type="date" id="dataRg">
-<input type="date" id="nascimento">
-<input id="cidadeNascimento" placeholder="Cidade de nascimento">
-<select id="sexo">
-  <option value="">Sexo</option>
-  <option>Masculino</option>
-  <option>Feminino</option>
-  <option>Outros</option>
-</select>
+<input id="celular" maxlength="15" placeholder="Celular" onkeyup="formatarCelularInput(this)">
 
-<select id="estadoCivil">
-  <option value="">Estado civil</option>
-  <option>Casado(a)</option>
-  <option>Solteiro(a)</option>
-  <option>Separado(a)</option>
-  <option>Outros</option>
-</select>
 
-<input id="mae" placeholder="Nome da mãe">
-<input id="pai" placeholder="Nome do pai">
-
-<!-- ENDEREÇO -->
-<input id="cep" placeholder="CEP" onblur="buscarCEP()">
-<input id="endereco" placeholder="Rua">
-<input id="numero" placeholder="Número">
-<input id="complemento" placeholder="Complemento">
-<input id="bairro" placeholder="Bairro">
-<input id="cidade" placeholder="Cidade">
-<input id="estado" placeholder="Estado">
-
-<!-- CURSO -->
 <select id="curso">
-  <option value="">Selecione o curso</option>
-  <option>Transporte Coletivo de Passageiros</option>
-  <option>Transporte Escolar</option>
-  <option>Transporte de Emergência</option>
-  <option>Transporte de Produtos Perigosos (MOPP)</option>
-  <option>Transporte de Cargas Indivisíveis</option>
-  <option>NR 06 - EPI</option>
-  <option>NR 11 - Operador de Empilhadeira</option>
-  <option>NR 12 - Segurança em Máquinas</option>
-  <option>NR 20 - Inflamáveis</option>
-  <option>NR 35 - Trabalho em Altura</option>
-  <option>Direção Defensiva</option>
-  <option>Direção Defensiva + Primeiros Socorros</option>
-  <option>Primeiros Socorros</option>
-  <option>Logística Básica</option>
+<option value="">Selecione o curso</option>
+<option>Transporte Coletivo de Passageiros</option>
+<option>Transporte Escolar</option>
+<option>Transporte de Emergência</option>
+<option>Transporte de Produtos Perigosos (MOPP)</option>
+<option>Transporte de Cargas Indivisíveis</option>
+<option>NR 06 - EPI</option>
+<option>NR 11 - Operador de Empilhadeira</option>
+<option>NR 12 - Segurança em Máquinas</option>
+<option>NR 20 - Inflamáveis</option>
+<option>NR 35 - Trabalho em Altura</option>
+<option>Direção Defensiva</option>
+<option>Direção Defensiva + Primeiros Socorros</option>
+<option>Primeiros Socorros</option>
+<option>Logística Básica</option>
 </select>
 
 <select id="tipo">
-  <option value="">Selecione o tipo</option>
-  <option>Formação</option>
-  <option>Atualização</option>
+<option value="">Selecione o tipo</option>
+<option>Formação</option>
+<option>Atualização</option>
 </select>
 
-<!-- CNH -->
-<input id="registroCNH" placeholder="Registro CNH">
-<input id="categoriaCNH" placeholder="Categoria CNH">
+<input id="cpf" maxlength="14" placeholder="CPF" onkeyup="formatarCPF(this)">
+<input id="rg" placeholder="RG">
+<input id="orgao" placeholder="Órgão emissor (ex: SSP/SP)" onkeyup="this.value=this.value.toUpperCase()">
+<input id="dataRg" maxlength="10" placeholder="Data emissão RG" onkeyup="formatarDataInput(this)">
+<input id="nascimento" maxlength="10" placeholder="Data de nascimento" onkeyup="formatarDataInput(this)">
+<input id="cidadeNascimento" placeholder="Cidade de nascimento">
+<input id="categoriaCNH" placeholder="Categoria CNH" onkeyup="this.value=this.value.toUpperCase()">
+<input id="numeroCNH" placeholder="Número da CNH">
+<select id="sexo">
+<option value="">Sexo</option>
+<option>Masculino</option>
+<option>Feminino</option>
+<option>Outros</option>
+</select>
+<select id="estadoCivil">
+<option value="">Estado civil</option>
+<option>Casado(a)</option>
+<option>Solteiro(a)</option>
+<option>Separado(a)</option>
+<option>Outros</option>
+</select>
+<input id="cep" maxlength="9" placeholder="CEP" onkeyup="formatarCEP(this)">
+<input id="endereco" placeholder="Logradouro: Rua/Avenida/Travessa">
+<input id="numero" placeholder="Número">
+<input id="complemento" placeholder="Complemento: Apto/Bloco/Andar">
+<input id="bairro" placeholder="Bairro">
+<input id="cidade" placeholder="Cidade">
+<input id="estado" placeholder="Estado" onkeyup="this.value=this.value.toUpperCase()">
+<input id="mae" placeholder="Nome da mãe">
+<input id="pai" placeholder="Nome do pai">
 
-<!-- SISTEMA -->
-<input id="assinatura" placeholder="Assinatura">
+<h3>Termo e Declaração</h3>
 
-<button id="btn">Enviar</button>
+<div id="boxTermo">
+
+<p><b>DECLARAÇÃO – GRUPO 3S</b></p>
+
+<p>Declaro ter conhecimento e aceitar as exigências contidas na Resolução 789, de 18 de junho de 2020, referente aos cursos especializados para condutores.</p>
+
+
+
+
+<p><b>REQUISITOS</b></p>
+<ul>
+<li>Ser maior de 21 anos</li>
+<li>Para atualização, ter realizado anteriormente o curso de formação</li>
+<li>Não estar cumprindo suspensão ou cassação da CNH</li>
+<li>Não estar impedido judicialmente de exercer o direito de dirigir</li>
+</ul>
+
+<p><b>MULTAS</b></p>
+<p>O aluno declara estar ciente de que a plataforma poderá ter dificuldades para atualização na Base de Condutores Atualizada (BCA) caso existam infrações
+gravíssimas nos últimos 12 meses ou infração auto suspensiva.</p>
+
+<p><b>INFORMAÇÕES IMPORTANTES</b></p>
+<p>A empresa Grupo 3S atua na área de treinamento profissional e gerencial, com cursos livres e parcerias com plataformas EAD especializadas. Caso o aluno realize curso de formação (50h), presencial ou online, deverá realizar prova eletrônica no DETRAN de origem da CNH.</p>
+
+<p><b>REEMBOLSO</b></p>
+<p>Não haverá restituição do valor pago caso o aluno desista após iniciar o curso ou
+tenha bloqueios na CNH.</p>
+
+<p>O aluno declara estar ciente de que, após a emissão do código de acesso individual e exclusivo para realização do curso na plataforma de ensino, considera-se iniciada a prestação dos serviços contratados.</p>
+
+<p>Em caso de desistência após a emissão do código de acesso, poderão ser retidos os valores correspondentes aos custos administrativos, operacionais e de processamento já realizados para cadastro, registro e liberação do curso ao aluno.</p>
+
+<p>O aluno declara ainda estar ciente de que é de sua responsabilidade verificar previamente o atendimento aos requisitos exigidos pelos órgãos competentes para realização do curso, não sendo devida restituição de valores em casos de impedimentos decorrentes de bloqueios, restrições ou irregularidades em sua CNH ou cadastro.</p>
+
+<p>Ao assinar esta declaração, o aluno declara ter lido, compreendido e concordado integralmente com as condições acima descritas.</p>
+
+<p><b>RESPONSABILIDADE DO DECLARANTE</b></p>
+
+<p>As informações constantes neste documento foram fornecidas diretamente pelo declarante, mediante preenchimento eletrônico e aceite digital, ficando o mesmo responsável pela veracidade dos dados apresentados.</p>
+
+<p>Declaro, sob as penas da lei, que todas as informações prestadas são verdadeiras, assumindo total responsabilidade por sua veracidade.</p>
+
+<p>Estou ciente de que a omissão ou prestação de informações falsas pode implicar em sanções administrativas, civis e penais, conforme legislação vigente.</p>
+
+<p><b>PROTEÇÃO DE DADOS (LGPD)</b></p>
+<p>Nos termos da Lei nº 13.709/2018 (LGPD), o aluno autoriza o tratamento de seus dados pessoais pela empresa Grupo 3S.</p>
+
+<p><b>ACEITE ELETRÔNICO</b></p>
+<p>Declaro que li, compreendi e concordo com todos os termos desta declaração, sendo o aceite realizado por meio eletrônico.</p>
+
+<label id="labelAceite" style="
+  display: flex;
+  align-items: center;
+  gap: 6px;       /* espaço entre texto e checkbox */
+  white-space: nowrap; /* impede quebra de linha */
+  cursor: pointer;
+  font-size: 14px; /* ajusta o tamanho do texto */
+  line-height: 1.2;
+  margin-top: 5px;
+">
+</label>
+</div> <!-- fecha boxTermo -->
+
+<label>
+  <input type="checkbox" id="aceite" disabled>
+  Aceito os termos
+</label>
+
+<input id="assinatura" placeholder="Digite seu nome como assinatura">
+
+<button id="btnFinalizar" disabled>
+FINALIZAR INSCRIÇÃO
+</button>
+
+<button onclick="consultarCPF()">
+CONSULTAR ALUNO
+</button>
+
+<button type="button" onclick="limparFormulario()">
+LIMPAR FORMULÁRIO
+</button>
+
+<div id="listaCadastros" style="
+margin-top:20px;
+display:none;
+background:#0f172a;
+padding:15px;
+border-radius:8px;
+">
+</div>
+
+<button type="button" onclick="listarCadastros()">
+AUDITORIA DE CADASTROS
+</button>
+
+<button type="button" onclick="gerarRelatorioCadastros()">
+GERAR RELATÓRIO DE CADASTRADOS
+</button>
+
+<button onclick="debugCadastros()">
+VER TOTAL REAL
+</button>
+
 </div>
 </div>
+
 
 <script>
 
-// ===== PEGAR DADOS =====
-function get(id){
-  return document.getElementById(id).value;
-}
 
-// ===== IP =====
-async function getIP(){
-  try {
-    const r = await fetch("https://api.ipify.org?format=json");
-    const d = await r.json();
-    return d.ip;
-  } catch {
-    return "0.0.0.0";
-  }
-}
+function debugCadastros(){
 
-// ===== ENVIO FINAL 3S =====
-document.getElementById("btn").addEventListener("click", async () => {
+  let total = 0;
 
-  const btn = document.getElementById("btn");
+  for(let i=0;i<localStorage.length;i++){
 
-  if (btn.disabled) return;
+    const chave = localStorage.key(i);
 
-  // validação mínima
-  if (!get("nome") || !get("cpf") || !get("email")) {
-    alert("Preencha os campos obrigatórios");
-    return;
+    if(chave.startsWith("cpf_")){
+      total++;
+      console.log(chave);
+    }
   }
 
-  btn.innerText = "Enviando... Aguarde";
-  btn.style.opacity = "0.7";
-  btn.disabled = true;
+  alert("Total encontrado: " + total);
+}
 
-  try {
+function gerarRelatorioCadastros(){
 
-    const dados = {
-      dataHora: new Date().toLocaleString(),
-      ip: await getIP(),
+  const { jsPDF } = window.jspdf;
 
-      nome: get("nome"),
-      email: get("email"),
-      celular: get("celular"),
-      cpf: get("cpf"),
-      rg: get("rg"),
-      orgao: get("orgao"),
-      dataRg: get("dataRg"),
-      nascimento: get("nascimento"),
-      cidadeNascimento: get("cidadeNascimento"),
-      sexo: get("sexo"),
-      estadoCivil: get("estadoCivil"),
-      mae: get("mae"),
-      pai: get("pai"),
+  const doc = new jsPDF();
 
-      cep: get("cep"),
-      endereco: get("endereco"),
-      numero: get("numero"),
-      complemento: get("complemento"),
-      bairro: get("bairro"),
-      cidade: get("cidade"),
-      estado: get("estado"),
+  let y = 20;
 
-      curso: get("curso"),
-      tipo: get("tipo"),
+  doc.setFontSize(14);
+  doc.setFont(undefined,"bold");
+  doc.text("RELAÇÃO DE CADASTRADOS - GRUPO 3S", 105, y, {
+    align:"center"
+  });
 
-      registroCNH: get("registroCNH"),
-      categoriaCNH: get("categoriaCNH"),
+  y += 15;
 
-      assinatura: get("assinatura")
-    };
+  let total = 0;
 
-    // 🔥 ÚNICO ENVIO (CORRETO)
-    const res = await fetch("https://script.google.com/macros/s/AKfycbw7EShE_pVx0-Tp9OofHBuyK5NbKHEVEfrCK_O4yg51ipVYadZIEoIbWT8ggZqrt0XV5g/exec", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: new URLSearchParams(dados)
-    });
+  for(let i=0;i<localStorage.length;i++){
 
-    const text = await res.text();
+    const chave = localStorage.key(i);
 
-    let json;
-    try {
-      json = JSON.parse(text);
-    } catch (e) {
-      console.log("Resposta inválida:", text);
-      alert("Erro no servidor");
+    if(!chave.startsWith("cpf_")){
+      continue;
+    }
+
+    try{
+
+      const cadastro = JSON.parse(
+        localStorage.getItem(chave)
+      );
+
+      if(y > 270){
+        doc.addPage();
+        y = 20;
+      }
+
+      doc.setFont(undefined,"bold");
+      doc.text(cadastro.nome || "", 10, y);
+
+      y += 6;
+
+      doc.setFont(undefined,"normal");
+
+      doc.text(
+        `CPF: ${cadastro.cpf || ""}`,
+        10,
+        y
+      );
+
+      y += 6;
+
+      doc.text(
+        `Curso: ${cadastro.curso || ""}`,
+        10,
+        y
+      );
+
+      y += 6;
+
+      doc.text(
+        `Tipo: ${cadastro.tipo || ""}`,
+        10,
+        y
+      );
+
+      y += 6;
+
+      doc.text(
+        `Data: ${cadastro.dataCadastro || ""}`,
+        10,
+        y
+      );
+
+      y += 10;
+
+      total++;
+
+    }catch(e){}
+  }
+
+  if(total === 0){
+
+    doc.text(
+      "Nenhum cadastro encontrado.",
+      10,
+      y
+    );
+
+  }
+
+  doc.save("relacao_cadastrados.pdf");
+}
+
+function textoJustificado(doc, texto, x, y, largura, alturaLinha = 6) {
+  const linhas = doc.splitTextToSize(texto, largura);
+
+  linhas.forEach((linha, index) => {
+
+    // Última linha não justifica
+    if (index === linhas.length - 1) {
+      doc.text(linha, x, y);
+      y += alturaLinha;
       return;
     }
 
-    if (json.status === "queued") {
-      alert("Enviado com sucesso! ID: " + json.id);
-    } else {
-      alert("Erro ao enviar");
+    const palavras = linha.split(" ");
+
+    if (palavras.length === 1) {
+      doc.text(linha, x, y);
+      y += alturaLinha;
+      return;
     }
 
-  } catch (err) {
-    alert("Erro de conexão");
+    const larguraTexto = doc.getTextWidth(linha);
+    const espacoExtra =
+      (largura - larguraTexto) / (palavras.length - 1);
+
+    let posX = x;
+
+    palavras.forEach((palavra, i) => {
+      doc.text(palavra, posX, y);
+
+      if (i < palavras.length - 1) {
+        posX +=
+          doc.getTextWidth(palavra + " ") + espacoExtra;
+      }
+    });
+
+    y += alturaLinha;
+  });
+
+  return y;
+}
+
+function listarCadastros(){
+
+  const div = document.getElementById("listaCadastros");
+
+  let html = "";
+  let total = 0;
+
+  for(let i=0;i<localStorage.length;i++){
+
+    const chave = localStorage.key(i);
+
+    if(!chave.startsWith("cpf_")){
+      continue;
+    }
+
+    try{
+
+  const cadastro = JSON.parse(
+    localStorage.getItem(chave)
+  );
+
+  total++;
+
+      html += `
+      <div style="
+        border-bottom:1px solid #334155;
+        padding:10px 0;
+      ">
+        <b>${cadastro.nome}</b><br>
+        CPF: ${cadastro.cpf}<br>
+        Curso: ${cadastro.curso}<br>
+        Tipo: ${cadastro.tipo}<br>
+        Data: ${cadastro.dataCadastro}<br><br>
+
+        <button onclick="excluirCadastro('${chave}')">
+          Excluir
+        </button>
+      </div>
+      `;
+
+    }catch(e){}
   }
 
-  btn.innerText = "Enviar";
-  btn.disabled = false;
-  btn.style.opacity = "1";
+  if(html===""){
+    html="<p>Nenhum cadastro encontrado.</p>";
+  }
+html =
+`<h3>Total de cadastrados: ${total}</h3>` + html;
+
+  div.innerHTML = html;
+  div.style.display = "block";
+}
+
+function limparFormulario(){
+
+  document.querySelectorAll("input").forEach(campo=>{
+    if(campo.type==="checkbox"){
+      campo.checked=false;
+    }else{
+      campo.value="";
+    }
+  });
+
+  document.querySelectorAll("select").forEach(sel=>{
+    sel.selectedIndex=0;
+  });
+
+  botao.disabled=true;
+}
+
+async function consultarCPF(){
+
+  const cpfConsulta = prompt("Digite o CPF:");
+
+  if(!cpfConsulta) return;
+
+  const cpfLimpo =
+    cpfConsulta.replace(/\D/g,"");
+
+  try{
+
+const res = await fetch(
+`https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec?action=cpf&cpf=${cpfLimpo}`
+);
+
+    const encontrados = await res.json();
+
+    if(encontrados.length === 0){
+
+      alert("CPF não encontrado.");
+      return;
+    }
+
+    let resultado = "";
+
+    encontrados.forEach((cadastro,index)=>{
+
+      resultado +=
+`CADASTRO ${index+1}
+
+Nome: ${cadastro.nome}
+CPF: ${cadastro.cpf}
+Curso: ${cadastro.curso}
+Tipo: ${cadastro.tipo}
+Data: ${cadastro.dataHora}
+Status: ${cadastro.status}
+
+`;
+    });
+
+    alert(resultado);
+
+  }catch(e){
+
+    alert("Erro ao consultar CPF.");
+    console.log(e);
+  }
+}
+// ==================== FORMATAÇÕES ====================
+
+function formatarCPF(campo){
+  let v = campo.value.replace(/\D/g,'');
+
+  v = v.replace(/(\d{3})(\d)/,'$1.$2');
+  v = v.replace(/(\d{3})(\d)/,'$1.$2');
+  v = v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+
+  campo.value = v;
+}
+
+function formatarCEP(campo){
+  let v = campo.value.replace(/\D/g,'');
+
+  v = v.replace(/(\d{5})(\d)/,'$1-$2');
+
+  campo.value = v;
+}
+
+function formatarDataInput(campo){
+  let v = campo.value.replace(/\D/g,'');
+
+  v = v.replace(/(\d{2})(\d)/,'$1/$2');
+  v = v.replace(/(\d{2})(\d)/,'$1/$2');
+
+  campo.value = v;
+}
+
+function formatarCelularInput(campo){
+  let v = campo.value.replace(/\D/g,'');
+
+  if(v.length > 11){
+    v = v.substring(0,11);
+  }
+
+  if(v.length > 10){
+    v = v.replace(/^(\d{2})(\d{5})(\d{4}).*/,'($1) $2-$3');
+  }else if(v.length > 6){
+    v = v.replace(/^(\d{2})(\d{4})(\d+).*/,'($1) $2-$3');
+  }else if(v.length > 2){
+    v = v.replace(/^(\d{2})(\d+).*/,'($1) $2');
+  }
+
+  campo.value = v;
+}
+
+// ==================== ELEMENTOS ====================
+const nome = document.getElementById("nome");
+const email = document.getElementById("email");
+const celular = document.getElementById("celular");
+const cpf = document.getElementById("cpf");
+const curso = document.getElementById("curso");
+const tipo = document.getElementById("tipo");
+const aceite = document.getElementById("aceite");
+const assinatura = document.getElementById("assinatura");
+const botao = document.getElementById("btnFinalizar");
+const box = document.getElementById("boxTermo");
+
+function liberarAceite(){
+  aceite.disabled = false;
+}
+
+box.addEventListener("scroll", () => {
+
+  const chegouFinal =
+    box.scrollTop + box.clientHeight >= box.scrollHeight - 10;
+
+  if(chegouFinal){
+    liberarAceite();
+  }
 
 });
 
-</script>
+window.addEventListener("load", ()=>{
 
+  setTimeout(()=>{
+
+    if(box.scrollHeight <= box.clientHeight){
+      liberarAceite();
+    }
+
+  },300);
+
+});
+
+// ==================== VALIDAÇÃO ====================
+function validarCPF(cpf){
+  cpf = cpf.replace(/\D/g,"");
+  if(cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+  let soma = 0, resto;
+
+  for(let i=1;i<=9;i++) soma += parseInt(cpf.substring(i-1,i))*(11-i);
+  resto = (soma*10)%11;
+  if(resto === 10 || resto === 11) resto = 0;
+  if(resto !== parseInt(cpf.substring(9,10))) return false;
+
+  soma = 0;
+  for(let i=1;i<=10;i++) soma += parseInt(cpf.substring(i-1,i))*(12-i);
+  resto = (soma*10)%11;
+  if(resto === 10 || resto === 11) resto = 0;
+  if(resto !== parseInt(cpf.substring(10,11))) return false;
+
+  return true;
+}
+
+function validar(){
+  if(
+    nome.value &&
+    validarCPF(cpf.value) &&
+    aceite.checked &&
+    assinatura.value.trim()
+  ){
+    botao.disabled = false;
+  }else{
+    botao.disabled = true;
+  }
+}
+
+document.addEventListener("input", validar);
+aceite.addEventListener("change", validar);
+
+// ==================== BLOQUEIO CPF ====================
+function gerarChaveCadastro(){
+  const c = cpf.value.replace(/\D/g,"");
+  const cursoSelecionado = curso.value.trim();
+  const tipoSelecionado = tipo.value.trim();
+
+  return `cpf_${c}_${cursoSelecionado}_${tipoSelecionado}`;
+}
+
+function jaEnviado(dados){
+  return localStorage.getItem(gerarChaveCadastro());
+}
+
+function marcarEnviado(dados){
+
+  const registro = {
+    nome: dados.nome,
+    cpf: dados.cpf,
+    curso: dados.curso,
+    tipo: dados.tipo,
+    dataCadastro: dados.dataHora
+  };
+
+  localStorage.setItem(
+    gerarChaveCadastro(),
+    JSON.stringify(registro)
+  );
+}
+
+// ==================== HASH ====================
+async function gerarHash(texto){
+  const data = new TextEncoder().encode(texto);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hash))
+    .map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+// ==================== IP ====================
+async function pegarIP(){
+  try{
+    const res = await fetch("https://api.ipify.org?format=json");
+    const data = await res.json();
+    return data.ip;
+  }catch{
+    return "N/A";
+  }
+}
+
+// ==================== GOOGLE SHEETS ====================
+async function enviarParaSheets(dados){
+
+  try{
+
+    const resposta = await fetch(
+      "https://script.google.com/macros/s/AKfycby0MEsuSHCeTRy9XL6bGlz8aDOntxVbIQtjU5T5rCFiej7up3UYpcEH6piwZvoU3A-J/exec",
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body: JSON.stringify(dados)
+      }
+    );
+
+    const texto = await resposta.text();
+
+    console.log("Resposta API:", texto);
+
+  }catch(e){
+
+    console.log("Erro ao enviar:", e);
+
+  }
+}
+// ==================== FINALIZAR ====================
+botao.addEventListener("click", async ()=>{
+
+  if(jaEnviado()){
+    alert("Este CPF já foi utilizado neste dispositivo.");
+    return;
+  }
+
+const { jsPDF } = window.jspdf;
+const doc = new jsPDF({
+  orientation: "portrait",
+  unit: "mm",
+  format: "a4"
+});
+
+  const contratoID = "CTR-"+Date.now();
+  const dataHora = new Date().toLocaleString();
+  const ip = await pegarIP();
+
+  const dados = {
+  nome: nome.value,
+  email: email.value,
+  celular: celular.value,
+  cpf: cpf.value,
+  rg: document.getElementById("rg").value,
+  orgao: document.getElementById("orgao").value,
+  dataRg: document.getElementById("dataRg").value,
+  nascimento: document.getElementById("nascimento").value,
+  cidadeNascimento: document.getElementById("cidadeNascimento").value,
+  categoriaCNH: document.getElementById("categoriaCNH").value,
+  numeroCNH: document.getElementById("numeroCNH").value,
+  sexo: document.getElementById("sexo").value,
+  estadoCivil: document.getElementById("estadoCivil").value,
+  endereco: document.getElementById("endereco").value,
+  numero: document.getElementById("numero").value,
+  complemento: document.getElementById("complemento").value,
+  cep: document.getElementById("cep").value,
+  bairro: document.getElementById("bairro").value,
+  cidade: document.getElementById("cidade").value,
+  estado: document.getElementById("estado").value,
+  mae: document.getElementById("mae").value,
+  pai: document.getElementById("pai").value,
+  curso: curso.value,
+  tipo: tipo.value,
+  assinatura: assinatura.value,
+  contratoID,
+  dataHora,
+  ip
+};
+
+const hash = await gerarHash(JSON.stringify(dados));
+
+dados.hash = hash;
+dados.status = "ATIVO";
+
+function verificarPagina(espacoNecessario = 20){
+
+  const alturaPagina = doc.internal.pageSize.height;
+
+  if(y + espacoNecessario > alturaPagina - 20){
+
+    doc.addPage();
+    y = 20;
+  }
+}
+
+  // ================= PDF =================
+  let y = 20;
+
+doc.setFontSize(14);
+doc.setFont(undefined,"bold");
+
+doc.text("DECLARAÇÃO OFICIAL",105,y,{align:"center"});
+
+y += 8;
+
+doc.text("GRUPO 3S",105,y,{align:"center"});
+
+y += 8;
+
+doc.setFontSize(10);
+doc.text(`Documento: ${contratoID}`,105,y,{align:"center"});
+
+y += 5;
+doc.line(20,y,190,y);
+
+y += 10;
+
+y += 8;
+
+doc.setFontSize(11);
+doc.setFont(undefined,"normal");
+
+const declaracaoCompleta = `
+Eu ${dados.nome}, CPF nº ${dados.cpf}, RG nº ${dados.rg}, ${dados.orgao}, emitido em ${dados.dataRg}, nascido em ${dados.nascimento}, na cidade de ${dados.cidadeNascimento}, portador da CNH categoria "${dados.categoriaCNH}", registro de CNH nº ${dados.numeroCNH}, categoria "${dados.categoriaCNH}", ${dados.sexo}, ${dados.estadoCivil}, residente e domiciliado à ${dados.endereco}, nº ${dados.numero}, ${dados.complemento || "sem complemento"}, CEP ${dados.cep}, bairro ${dados.bairro}, cidade de ${dados.cidade}/${dados.estado}, filho de ${dados.mae} e ${dados.pai}.
+
+Declaro estar apto e ciente das exigências legais para participação no curso "${dados.curso}" (${dados.tipo}).
+`;
+
+const linhasDeclaracao =
+  doc.splitTextToSize(declaracaoCompleta,170);
+
+verificarPagina(linhasDeclaracao.length * 6);
+
+y = textoJustificado(
+  doc,
+  declaracaoCompleta,
+  20,
+  y,
+  170,
+  6
+);
+
+y += 10;
+
+
+verificarPagina();
+doc.setFont(undefined,"bold");
+doc.text("REQUISITOS",20,y);
+
+y += 15;
+doc.setFont(undefined,"normal");
+
+doc.text("• Ser maior de 21 anos",20,y);
+y += 8;
+
+doc.text("• Para atualização, ter realizado anteriormente o curso de formação",20,y,{maxWidth:170});
+y += 12;
+
+doc.text("• Não estar cumprindo suspensão ou cassação da CNH",20,y,{maxWidth:170});
+y += 12;
+
+doc.text("• Não estar impedido judicialmente de exercer o direito de dirigir",20,y,{maxWidth:170});
+
+y += 10;
+verificarPagina();
+doc.setFont(undefined,"bold");
+doc.text("MULTAS",20,y);
+
+y += 10;
+
+doc.setFont(undefined,"normal");
+const textoMultas = doc.splitTextToSize(
+"O aluno declara estar ciente de que a plataforma poderá ter dificuldades para atualização na Base de Condutores Atualizada (BCA) caso existam infrações gravíssimas nos últimos 12 meses ou infração auto suspensiva.",
+170
+);
+
+verificarPagina(textoMultas.length * 6);
+
+doc.text(textoMultas,20,y);
+
+y += (textoMultas.length * 6) + 10;
+
+y += 10;
+verificarPagina();
+doc.setFont(undefined,"bold");
+doc.text("INFORMAÇÕES IMPORTANTES",20,y);
+
+y += 15;
+doc.setFont(undefined,"normal");
+const textoInfo = doc.splitTextToSize(
+"A empresa Grupo 3S atua na área de treinamento profissional e gerencial, com cursos livres e parcerias com plataformas EAD especializadas. Caso o aluno realize curso de formação (50h), presencial ou online, deverá realizar prova eletrônica no DETRAN de origem da CNH.",
+170
+);
+verificarPagina(textoInfo.length * 6);
+
+doc.text(textoInfo,20,y);
+
+y += (textoInfo.length * 6) + 10;
+
+y += 10;
+verificarPagina();
+doc.setFont(undefined,"bold");
+doc.text("REEMBOLSO",20,y);
+
+y += 15;
+doc.setFont(undefined,"normal");
+
+const textoReembolso = doc.splitTextToSize(
+`O aluno declara estar ciente de que, após a emissão do código de acesso individual e exclusivo para realização do curso na plataforma de ensino, considera-se iniciada a prestação dos serviços contratados.
+
+Em caso de desistência após a emissão do código de acesso, poderão ser retidos os valores correspondentes aos custos administrativos, operacionais e de processamento já realizados para cadastro, registro e liberação do curso ao aluno.
+
+O aluno declara ainda estar ciente de que é de sua responsabilidade verificar previamente o atendimento aos requisitos exigidos pelos órgãos competentes para realização do curso, não sendo devida restituição de valores em casos de impedimentos decorrentes de bloqueios, restrições ou irregularidades em sua CNH ou cadastro.
+
+Ao assinar esta declaração, o aluno declara ter lido, compreendido e concordado integralmente com as condições acima descritas.`,
+170
+);
+
+verificarPagina(textoReembolso.length * 6);
+
+doc.text(textoReembolso,20,y);
+
+y += textoReembolso.length * 6;
+y += 10;
+
+
+
+y +=10;
+verificarPagina();
+doc.setFont(undefined,"bold");
+doc.text("RESPONSABILIDADE DO DECLARANTE",20,y);
+
+y += 15;
+doc.setFont(undefined,"normal");
+
+doc.text(
+"A falsidade desta declaração poderá caracterizar crime previsto nos artigos 298 e 299 do Código Penal Brasileiro.",
+20,y,{maxWidth:170}
+);
+
+y += 15;
+
+
+y += 10;
+doc.setFont(undefined,"normal");
+
+doc.text(
+"Declaro, sob as penas da lei, que todas as informações prestadas são verdadeiras, assumindo total responsabilidade por sua veracidade.",
+20,y,{maxWidth:170}
+);
+
+y += 18;
+
+doc.text(
+"As informações constantes neste documento foram fornecidas diretamente pelo declarante, mediante preenchimento eletrônico e aceite digital, ficando o mesmo responsável pela veracidade dos dados apresentados.",
+20,
+y,
+{maxWidth:170}
+);
+
+y += 20;
+
+doc.text(
+"As informações constantes neste documento foram fornecidas diretamente pelo declarante, mediante preenchimento eletrônico e aceite digital, ficando o mesmo responsável pela veracidade dos dados apresentados.",
+20,y,{maxWidth:170}
+);
+
+y += 20;
+verificarPagina();
+doc.setFont(undefined,"bold");
+doc.text("PROTEÇÃO DE DADOS (LGPD)",20,y);
+
+y += 10;
+
+doc.setFont(undefined,"normal");
+
+const textoLGPD = doc.splitTextToSize(
+"Nos termos da Lei nº 13.709/2018 (LGPD), o aluno autoriza o tratamento de seus dados pessoais pela empresa Grupo 3S.",
+170
+);
+
+verificarPagina(textoLGPD.length * 6);
+
+doc.text(textoLGPD,20,y);
+
+y += (textoLGPD.length * 6) + 10;
+
+y += 20;
+verificarPagina();
+doc.setFont(undefined,"bold");
+doc.text("ACEITE ELETRÔNICO",20,y);
+
+y += 10;
+
+doc.setFont(undefined,"normal");
+
+const textoAceite = doc.splitTextToSize(
+"Declaro que li, compreendi e concordo com todos os termos desta declaração, sendo o aceite realizado por meio eletrônico.",
+170
+);
+
+verificarPagina(textoAceite.length * 6);
+
+doc.text(textoAceite,20,y);
+
+y += (textoAceite.length * 6) + 10;
+
+y += 20;
+verificarPagina();
+doc.text(`Data: ${dados.dataHora}`,20,y);
+y += 10;
+
+doc.text(`IP: ${dados.ip}`,20,y);
+y += 10;
+
+const textoHash = doc.splitTextToSize(
+`Hash: ${hash}`,
+170
+);
+
+verificarPagina(textoHash.length * 6);
+
+doc.text(textoHash,20,y);
+
+y += (textoHash.length * 6) + 10;
+
+verificarPagina(50);
+
+doc.setFont(undefined,"bold");
+doc.text("ASSINATURA ELETRÔNICA",20,y);
+
+y += 15;
+
+doc.line(20,y,100,y);
+
+y += 8;
+
+doc.setFont(undefined,"normal");
+doc.text(dados.assinatura.toUpperCase(),20,y);
+
+y += 12;
+
+const textoAssinatura = doc.splitTextToSize(
+"O aceite foi realizado mediante marcação da opção 'Li e Aceito', associado aos dados informados pelo declarante, data, hora, IP e hash de integridade deste documento.",
+  170
+);
+
+verificarPagina(textoAssinatura.length * 6);
+doc.text(textoAssinatura,20,y);
+
+y += (textoAssinatura.length * 6) + 10;
+
+y += 20;
+
+  // ======== doc.save("contrato_3s.pdf"); =======//
+const pdfBlob = doc.output("blob");
+
+const link = document.createElement("a");
+link.href = URL.createObjectURL(pdfBlob);
+link.download = "contrato_3s.pdf";
+
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+
+
+  // ================= ENVIO =================
+  await enviarParaSheets(dados);
+
+  marcarEnviado();
+
+  alert("Inscrição finalizada com sucesso!");
+
+});
+
+function excluirCadastro(chave){
+
+  const motivo = prompt(
+    "Motivo da exclusão:"
+  );
+
+  if(motivo===null) return;
+
+  const cadastro = JSON.parse(
+    localStorage.getItem(chave)
+  );
+
+  localStorage.setItem(
+    "excluido_"+Date.now(),
+    JSON.stringify({
+      nome: cadastro.nome,
+      cpf: cadastro.cpf,
+      curso: cadastro.curso,
+      tipo: cadastro.tipo,
+      motivo: motivo,
+      dataExclusao: new Date().toLocaleString()
+    })
+  );
+  
+  localStorage.removeItem(chave);
+
+  alert("Cadastro excluído com sucesso.");
+
+  listarCadastros();
+}
+</script>
 </body>
 </html>
