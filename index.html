@@ -305,7 +305,7 @@ function debugCadastros(){
 
     const chave = localStorage.key(i);
 
-    if(chave.startsWith("cpf_")){
+   if(chave.includes("_")){
       total++;
       console.log(chave);
     }
@@ -394,9 +394,9 @@ async function gerarRelatorioCadastros(){
 
     });
 
-    doc.save("relacao_cadastrados.pdf");
-
-  }catch(e){
+  doc.save(
+  `RELATORIO_CADASTROS_${Date.now()}.pdf`
+);
 
     alert("Erro ao gerar relatório.");
 
@@ -695,15 +695,24 @@ aceite.addEventListener("change", validar);
 
 // ==================== BLOQUEIO CPF ====================
 function gerarChaveCadastro(){
-  const c = cpf.value.replace(/\D/g,"");
-  const cursoSelecionado = curso.value.trim();
-  const tipoSelecionado = tipo.value.trim();
 
-  return `cpf_${c}_${cursoSelecionado}_${tipoSelecionado}`;
+  const cpfLimpo =
+    cpf.value.replace(/\D/g,"");
+
+  const cursoSelecionado =
+    curso.value.trim().toUpperCase();
+
+  const tipoSelecionado =
+    tipo.value.trim().toUpperCase();
+
+  return `${cpfLimpo}_${cursoSelecionado}_${tipoSelecionado}`;
 }
 
 function jaEnviado(){
-  return localStorage.getItem(gerarChaveCadastro());
+
+  const chave = gerarChaveCadastro();
+
+  return localStorage.getItem(chave);
 }
 
 function marcarEnviado(dados){
@@ -716,11 +725,12 @@ function marcarEnviado(dados){
     dataCadastro: dados.dataHora
   };
 
-  localStorage.setItem(
-    gerarChaveCadastro(),
-    JSON.stringify(registro)
-  );
-}
+ const chave = gerarChaveCadastro();
+
+localStorage.setItem(
+  chave,
+  JSON.stringify(registro)
+);
 
 // ==================== HASH ====================
 async function gerarHash(texto){
@@ -1100,8 +1110,15 @@ const pdfBlob = doc.output("blob");
 
 const link = document.createElement("a");
 link.href = URL.createObjectURL(pdfBlob);
-link.download = "contrato_3s.pdf";
+const nomeArquivo =
+`CONTRATO_${contratoID}_${
+dados.nome.replace(/\s+/g,"-")
+}_${
+dados.cpf.replace(/\D/g,"")
+}.pdf`;
 
+link.download = nomeArquivo;
+  
 document.body.appendChild(link);
 link.click();
 document.body.removeChild(link);
