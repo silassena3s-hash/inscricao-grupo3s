@@ -761,13 +761,23 @@ async function enviarParaSheets(dados){
 
     console.log("Resposta API:", texto);
 
+    if(texto !== "OK"){
+      alert("Erro ao salvar na planilha.");
+      return false;
+    }
+
+    return true;
+
   }catch(e){
 
-    console.log("Erro ao enviar:", e);
+    console.log(e);
 
+    alert("Erro de conexão com a planilha.");
+
+    return false;
   }
 }
-// ==================== FINALIZAR ====================
+  // ==================== FINALIZAR ====================
 botao.addEventListener("click", async ()=>{
 
   if(jaEnviado()){
@@ -1098,14 +1108,19 @@ document.body.removeChild(link);
 
 
   // ================= ENVIO =================
-  await enviarParaSheets(dados);
+ const enviado = await enviarParaSheets(dados);
+
+if(enviado){
 
   marcarEnviado(dados);
 
   alert("Inscrição finalizada com sucesso!");
 
-});
+}else{
 
+  alert("PDF gerado, mas não foi salvo na planilha.");
+}
+});  
 function excluirCadastro(chave){
 
   const motivo = prompt(
