@@ -338,7 +338,7 @@ async function gerarRelatorioCadastros(){
   try{
 
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec?action=listar"
+      "https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec?action=listar"
     );
 
     const dados = await res.json();
@@ -454,7 +454,7 @@ async function listarCadastros(){
   try{
 
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec?action=listar"
+      "https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec?action=listar"
     );
 
     const dados = await res.json();
@@ -534,7 +534,7 @@ async function consultarCPF(){
   try{
 
 const res = await fetch(
-`https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec?action=cpf&cpf=${cpfLimpo}`
+`https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec?action=cpf&cpf=${cpfLimpo}`
 );
 
 const encontrados = await res.json();
@@ -757,7 +757,7 @@ async function enviarParaSheets(dados){
   try{
 
     const resposta = await fetch(
-      "https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec",
+      "https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec",
       {
         method:"POST",
         headers:{
