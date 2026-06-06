@@ -338,7 +338,7 @@ async function gerarRelatorioCadastros(){
   try{
 
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec?action=listar"
+      "https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec?action=listar"
     );
 
     const dados = await res.json();
@@ -454,7 +454,7 @@ async function listarCadastros(){
   try{
 
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec?action=listar"
+      "https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec?action=listar"
     );
 
     const dados = await res.json();
@@ -534,7 +534,7 @@ async function consultarCPF(){
   try{
 
 const res = await fetch(
-`https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec?action=cpf&cpf=${cpfLimpo}`
+`https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec?action=cpf&cpf=${cpfLimpo}`
 );
 
 const encontrados = await res.json();
@@ -710,27 +710,28 @@ function gerarChaveCadastro(){
 
 function jaEnviado(){
 
-  return localStorage.getItem(
-    gerarChaveCadastro()
-  );
+  const chave = gerarChaveCadastro();
+
+  return localStorage.getItem(chave);
 }
 
 function marcarEnviado(dados){
 
-  const chave =
-    `${dados.cpf.replace(/\D/g,"")}_${dados.curso.trim().toUpperCase()}_${dados.tipo.trim().toUpperCase()}`;
+  const registro = {
+    nome: dados.nome,
+    cpf: dados.cpf,
+    curso: dados.curso,
+    tipo: dados.tipo,
+    dataCadastro: dados.dataHora
+  };
 
-  localStorage.setItem(
-    chave,
-    JSON.stringify({
-      nome: dados.nome,
-      cpf: dados.cpf,
-      curso: dados.curso,
-      tipo: dados.tipo,
-      dataCadastro: dados.dataHora
-    })
-  );
-}
+ const chave = gerarChaveCadastro();
+
+localStorage.setItem(
+  chave,
+  JSON.stringify(registro)
+);
+
 // ==================== HASH ====================
 async function gerarHash(texto){
   const data = new TextEncoder().encode(texto);
@@ -756,7 +757,7 @@ async function enviarParaSheets(dados){
   try{
 
     const resposta = await fetch(
-      "https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec",
+      "https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec",
       {
         method:"POST",
         headers:{
@@ -785,7 +786,7 @@ async function enviarParaSheets(dados){
 
     return false;
   }
-
+}
   // ==================== FINALIZAR ====================
 botao.addEventListener("click", async ()=>{
 
@@ -805,7 +806,7 @@ const doc = new jsPDF({
   const dataHora = new Date().toLocaleString();
   const ip = await pegarIP();
 
-const dados = {
+  const dados = {
   nome: nome.value,
   email: email.value,
   celular: celular.value,
@@ -1116,8 +1117,7 @@ dados.nome.replace(/\s+/g,"-")
 dados.cpf.replace(/\D/g,"")
 }.pdf`;
 
-link.download =
-`${contratoID}_${dados.cpf}_${dados.nome}.pdf`;
+link.download = nomeArquivo;
   
 document.body.appendChild(link);
 link.click();
