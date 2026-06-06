@@ -785,7 +785,7 @@ async function enviarParaSheets(dados){
 
     return false;
   }
-}
+
   // ==================== FINALIZAR ====================
 botao.addEventListener("click", async ()=>{
 
@@ -805,7 +805,7 @@ const doc = new jsPDF({
   const dataHora = new Date().toLocaleString();
   const ip = await pegarIP();
 
-  const dados = {
+const dados = {
   nome: nome.value,
   email: email.value,
   celular: celular.value,
@@ -1116,7 +1116,8 @@ dados.nome.replace(/\s+/g,"-")
 dados.cpf.replace(/\D/g,"")
 }.pdf`;
 
-link.download = nomeArquivo;
+link.download =
+`${contratoID}_${dados.cpf}_${dados.nome}.pdf`;
   
 document.body.appendChild(link);
 link.click();
