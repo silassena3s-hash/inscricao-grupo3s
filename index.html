@@ -314,7 +314,7 @@ function debugCadastros(){
   alert("Total encontrado: " + total);
 }
 
-function gerarRelatorioCadastros(){
+async function gerarRelatorioCadastros(){
 
   const { jsPDF } = window.jspdf;
 
@@ -323,36 +323,38 @@ function gerarRelatorioCadastros(){
   let y = 20;
 
   doc.setFontSize(14);
+
   doc.setFont(undefined,"bold");
-  doc.text("RELAÇÃO DE CADASTRADOS - GRUPO 3S", 105, y, {
-    align:"center"
-  });
+
+  doc.text(
+    "RELAÇÃO DE CADASTRADOS - GRUPO 3S",
+    105,
+    y,
+    {align:"center"}
+  );
 
   y += 15;
 
-  let total = 0;
+  try{
 
-  for(let i=0;i<localStorage.length;i++){
+    const res = await fetch(
+      "https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec?action=listar"
+    );
 
-    const chave = localStorage.key(i);
+    const dados = await res.json();
 
-    if(!chave.startsWith("cpf_")){
-      continue;
-    }
-
-    try{
-
-      const cadastro = JSON.parse(
-        localStorage.getItem(chave)
-      );
+    dados.forEach((cadastro)=>{
 
       if(y > 270){
+
         doc.addPage();
+
         y = 20;
       }
 
       doc.setFont(undefined,"bold");
-      doc.text(cadastro.nome || "", 10, y);
+
+      doc.text(cadastro.nome || "",10,y);
 
       y += 6;
 
@@ -383,31 +385,24 @@ function gerarRelatorioCadastros(){
       y += 6;
 
       doc.text(
-        `Data: ${cadastro.dataCadastro || ""}`,
+        `Data: ${cadastro.dataHora || ""}`,
         10,
         y
       );
 
       y += 10;
 
-      total++;
+    });
 
-    }catch(e){}
+    doc.save("relacao_cadastrados.pdf");
+
+  }catch(e){
+
+    alert("Erro ao gerar relatório.");
+
+    console.log(e);
   }
-
-  if(total === 0){
-
-    doc.text(
-      "Nenhum cadastro encontrado.",
-      10,
-      y
-    );
-
-  }
-
-  doc.save("relacao_cadastrados.pdf");
 }
-
 function textoJustificado(doc, texto, x, y, largura, alturaLinha = 6) {
   const linhas = doc.splitTextToSize(texto, largura);
 
@@ -449,59 +444,61 @@ function textoJustificado(doc, texto, x, y, largura, alturaLinha = 6) {
   return y;
 }
 
-function listarCadastros(){
+async function listarCadastros(){
 
   const div = document.getElementById("listaCadastros");
 
-  let html = "";
-  let total = 0;
+  div.innerHTML = "Carregando...";
+  div.style.display = "block";
 
-  for(let i=0;i<localStorage.length;i++){
+  try{
 
-    const chave = localStorage.key(i);
+    const res = await fetch(
+      "https://script.google.com/macros/s/AKfycbxummH8Ts9YK047DsHjUnZT42q6mFumQB6Su-VRtqoV_Q7Bo8eeg8m4qQfQpWIEm36I/exec?action=listar"
+    );
 
-    if(!chave.startsWith("cpf_")){
-      continue;
-    }
+    const dados = await res.json();
 
-    try{
+    let html = `
+      <h3>Total de cadastrados: ${dados.length}</h3>
+    `;
 
-  const cadastro = JSON.parse(
-    localStorage.getItem(chave)
-  );
-
-  total++;
+    dados.reverse().forEach((cadastro,index)=>{
 
       html += `
       <div style="
         border-bottom:1px solid #334155;
         padding:10px 0;
       ">
-        <b>${cadastro.nome}</b><br>
-        CPF: ${cadastro.cpf}<br>
-        Curso: ${cadastro.curso}<br>
-        Tipo: ${cadastro.tipo}<br>
-        Data: ${cadastro.dataCadastro}<br><br>
 
-        <button onclick="excluirCadastro('${chave}')">
-          Excluir
-        </button>
+        <b>${cadastro.nome || ""}</b><br>
+
+        CPF: ${cadastro.cpf || ""}<br>
+
+        Curso: ${cadastro.curso || ""}<br>
+
+        Tipo: ${cadastro.tipo || ""}<br>
+
+        Data: ${cadastro.dataHora || ""}<br>
+
+        Status: ${cadastro.status || ""}
+
       </div>
       `;
 
-    }catch(e){}
-  }
+    });
 
-  if(html===""){
-    html="<p>Nenhum cadastro encontrado.</p>";
-  }
-html =
-`<h3>Total de cadastrados: ${total}</h3>` + html;
+    div.innerHTML = html;
 
-  div.innerHTML = html;
-  div.style.display = "block";
+  }catch(e){
+
+    div.innerHTML = `
+      <p>Erro ao carregar auditoria.</p>
+    `;
+
+    console.log(e);
+  }
 }
-
 function limparFormulario(){
 
   document.querySelectorAll("input").forEach(campo=>{
