@@ -157,11 +157,11 @@ label{
 <input id="cpf" maxlength="14" placeholder="CPF" onkeyup="formatarCPF(this)">
 <input id="rg" placeholder="RG">
 <input id="orgao" placeholder="Órgão emissor (ex: SSP/SP)" onkeyup="this.value=this.value.toUpperCase()">
-<input id="dataRg" maxlength="10" placeholder="Data emissão RG" onkeyup="formatarDataInput(this)">
-<input id="nascimento" maxlength="10" placeholder="Data de nascimento" onkeyup="formatarDataInput(this)">
+<input id="dataRg" maxlength="10" placeholder="Data emissão RG" oninput="formatarDataInput(this)">
+<input id="nascimento" maxlength="10" placeholder="Data de nascimento" oninput="formatarDataInput(this)">
 <input id="cidadeNascimento" placeholder="Cidade de nascimento">
 <input id="categoriaCNH" placeholder="Categoria CNH" onkeyup="this.value=this.value.toUpperCase()">
-<input id="numeroCNH" placeholder="Número da CNH">
+<input id="numeroCNH" placeholder="Número de registro da CNH">
 <select id="sexo">
 <option value="">Sexo</option>
 <option>Masculino</option>
@@ -404,6 +404,9 @@ doc.save(
 
   console.log(e);
 }
+
+} // FECHA gerarRelatorioCadastros()
+
 function textoJustificado(doc, texto, x, y, largura, alturaLinha = 6) {
   const linhas = doc.splitTextToSize(texto, largura);
 
