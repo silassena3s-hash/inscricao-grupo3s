@@ -394,14 +394,17 @@ async function gerarRelatorioCadastros(){
 
     });
 
-  doc.save(
+doc.save(
   `RELATORIO_CADASTROS_${Date.now()}.pdf`
 );
 
-    alert("Erro ao gerar relatório.");
+alert("Relatório gerado com sucesso.");
 
-    console.log(e);
-  }
+}catch(e){
+
+  alert("Erro ao gerar relatório.");
+
+  console.log(e);
 }
 function textoJustificado(doc, texto, x, y, largura, alturaLinha = 6) {
   const linhas = doc.splitTextToSize(texto, largura);
@@ -725,13 +728,15 @@ function marcarEnviado(dados){
     dataCadastro: dados.dataHora
   };
 
- const chave = gerarChaveCadastro();
+  const chave = gerarChaveCadastro();
 
-localStorage.setItem(
-  chave,
-  JSON.stringify(registro)
-);
+  localStorage.setItem(
+    chave,
+    JSON.stringify(registro)
+  );
+
 }
+
 // ==================== HASH ====================
 async function gerarHash(texto){
   const data = new TextEncoder().encode(texto);
