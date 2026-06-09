@@ -639,13 +639,14 @@ function liberarAceite(){
 
 box.addEventListener("scroll", () => {
 
-  const scrollAtual = Math.ceil(
-    box.scrollTop + box.clientHeight
-  );
+  box.addEventListener("scroll", () => {
 
-  const alturaTotal = box.scrollHeight;
+  box.addEventListener("scroll", () => {
 
-  if(scrollAtual >= alturaTotal - 5){
+  if (
+    box.scrollTop + box.clientHeight >=
+    box.scrollHeight - 10
+  ) {
 
     aceite.disabled = false;
 
