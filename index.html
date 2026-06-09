@@ -93,13 +93,51 @@ label{
 }
 
 #boxTermo{
-  max-height:200px;
+  max-height:220px;
   overflow-y:auto;
+  overflow-x:hidden;
+
   background:#0f172a;
   padding:15px;
-  border-radius:6px;
+  border-radius:8px;
   margin-bottom:10px;
+
+  border:1px solid #334155;
+
+  scroll-behavior:smooth;
+
+  -webkit-overflow-scrolling: touch;
 }
+
+/* Espaçamento interno do termo */
+#boxTermo p,
+#boxTermo li{
+  line-height:1.6;
+  margin-bottom:12px;
+  font-size:15px;
+}
+
+/* Lista */
+#boxTermo ul{
+  padding-left:20px;
+  margin-bottom:12px;
+}
+
+/* Barra de rolagem */
+#boxTermo::-webkit-scrollbar{
+  width:8px;
+}
+
+#boxTermo::-webkit-scrollbar-track{
+  background:#1e293b;
+  border-radius:10px;
+}
+
+#boxTermo::-webkit-scrollbar-thumb{
+  background:#22c55e;
+  border-radius:10px;
+}
+
 #btnFinalizar{
   margin-bottom:10px;
 }
@@ -461,13 +499,12 @@ function liberarAceite(){
 
   box.addEventListener("scroll", () => {
 
-  if (
-    box.scrollTop + box.clientHeight >=
-    box.scrollHeight - 10
-  ) {
+  const chegouFinal =
+    Math.ceil(box.scrollTop + box.clientHeight)
+    >= box.scrollHeight - 5;
 
+  if(chegouFinal){
     aceite.disabled = false;
-
   }
 
 });
