@@ -398,8 +398,6 @@ doc.save(
   `RELATORIO_CADASTROS_${Date.now()}.pdf`
 );
 
-alert("Relatório gerado com sucesso.");
-
 }catch(e){
 
   alert("Erro ao gerar relatório.");
@@ -638,11 +636,16 @@ function liberarAceite(){
 
 box.addEventListener("scroll", () => {
 
-  const chegouFinal =
-    box.scrollTop + box.clientHeight >= box.scrollHeight - 10;
+  const scrollAtual = Math.ceil(
+    box.scrollTop + box.clientHeight
+  );
 
-  if(chegouFinal){
-    liberarAceite();
+  const alturaTotal = box.scrollHeight;
+
+  if(scrollAtual >= alturaTotal - 5){
+
+    aceite.disabled = false;
+
   }
 
 });
