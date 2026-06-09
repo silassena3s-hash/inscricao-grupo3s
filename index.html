@@ -261,151 +261,11 @@ tenha bloqueios na CNH.</p>
 FINALIZAR INSCRIÇÃO
 </button>
 
-<button onclick="consultarCPF()">
-CONSULTAR ALUNO
-</button>
-
-<button type="button" onclick="limparFormulario()">
-LIMPAR FORMULÁRIO
-</button>
-
-<div id="listaCadastros" style="
-margin-top:20px;
-display:none;
-background:#0f172a;
-padding:15px;
-border-radius:8px;
-">
-</div>
-
-<button type="button" onclick="listarCadastros()">
-AUDITORIA DE CADASTROS
-</button>
-
-<button type="button" onclick="gerarRelatorioCadastros()">
-GERAR RELATÓRIO DE CADASTRADOS
-</button>
-
-<button onclick="debugCadastros()">
-VER TOTAL REAL
-</button>
-
 </div>
 </div>
 
 
 <script>
-
-
-function debugCadastros(){
-
-  let total = 0;
-
-  for(let i=0;i<localStorage.length;i++){
-
-    const chave = localStorage.key(i);
-
-   if(chave.includes("_")){
-      total++;
-      console.log(chave);
-    }
-  }
-
-  alert("Total encontrado: " + total);
-}
-
-async function gerarRelatorioCadastros(){
-
-  const { jsPDF } = window.jspdf;
-
-  const doc = new jsPDF();
-
-  let y = 20;
-
-  doc.setFontSize(14);
-
-  doc.setFont(undefined,"bold");
-
-  doc.text(
-    "RELAÇÃO DE CADASTRADOS - GRUPO 3S",
-    105,
-    y,
-    {align:"center"}
-  );
-
-  y += 15;
-
-  try{
-
-    const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec?action=listar"
-    );
-
-    const dados = await res.json();
-
-    dados.forEach((cadastro)=>{
-
-      if(y > 270){
-
-        doc.addPage();
-
-        y = 20;
-      }
-
-      doc.setFont(undefined,"bold");
-
-      doc.text(cadastro.nome || "",10,y);
-
-      y += 6;
-
-      doc.setFont(undefined,"normal");
-
-      doc.text(
-        `CPF: ${cadastro.cpf || ""}`,
-        10,
-        y
-      );
-
-      y += 6;
-
-      doc.text(
-        `Curso: ${cadastro.curso || ""}`,
-        10,
-        y
-      );
-
-      y += 6;
-
-      doc.text(
-        `Tipo: ${cadastro.tipo || ""}`,
-        10,
-        y
-      );
-
-      y += 6;
-
-      doc.text(
-        `Data: ${cadastro.dataHora || ""}`,
-        10,
-        y
-      );
-
-      y += 10;
-
-    });
-
-doc.save(
-  `RELATORIO_CADASTROS_${Date.now()}.pdf`
-);
-
-}catch(e){
-
-  alert("Erro ao gerar relatório.");
-
-  console.log(e);
-}
-
-} // FECHA gerarRelatorioCadastros()
 
 function textoJustificado(doc, texto, x, y, largura, alturaLinha = 6) {
   const linhas = doc.splitTextToSize(texto, largura);
@@ -448,133 +308,6 @@ function textoJustificado(doc, texto, x, y, largura, alturaLinha = 6) {
   return y;
 }
 
-async function listarCadastros(){
-
-  const div = document.getElementById("listaCadastros");
-
-  div.innerHTML = "Carregando...";
-  div.style.display = "block";
-
-  try{
-
-    const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec?action=listar"
-    );
-
-    const dados = await res.json();
-
-    let html = `
-      <h3>Total de cadastrados: ${dados.length}</h3>
-    `;
-
-    dados.reverse().forEach((cadastro,index)=>{
-
-      html += `
-      <div style="
-        border-bottom:1px solid #334155;
-        padding:10px 0;
-      ">
-
-        <b>${cadastro.nome || ""}</b><br>
-
-        CPF: ${cadastro.cpf || ""}<br>
-
-        Curso: ${cadastro.curso || ""}<br>
-
-        Tipo: ${cadastro.tipo || ""}<br>
-
-        Data: ${cadastro.dataHora || ""}<br>
-
-        Status: ${cadastro.status || ""}
-
-      </div>
-      `;
-
-    });
-
-    div.innerHTML = html;
-
-  }catch(e){
-
-    div.innerHTML = `
-      <p>Erro ao carregar auditoria.</p>
-    `;
-
-    console.log(e);
-  }
-}
-function limparFormulario(){
-
-  document.querySelectorAll("input").forEach(campo=>{
-
-    if(campo.type==="checkbox"){
-      campo.checked = false;
-    }else{
-      campo.value = "";
-    }
-
-  });
-
-  document.querySelectorAll("select").forEach(sel=>{
-    sel.selectedIndex = 0;
-  });
-
-  aceite.disabled = true;
-
-  botao.disabled = true;
-
-  box.scrollTop = 0;
-}
-
-async function consultarCPF(){
-
-  const cpfConsulta = prompt("Digite o CPF:");
-
-  if(!cpfConsulta) return;
-
-  const cpfLimpo =
-    cpfConsulta.replace(/\D/g,"");
-
-  try{
-
-const res = await fetch(
-`https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec?action=cpf&cpf=${cpfLimpo}`
-);
-
-const encontrados = await res.json();
-
-    if(encontrados.length === 0){
-
-      alert("CPF não encontrado.");
-      return;
-    }
-
-    let resultado = "";
-
-    encontrados.forEach((cadastro,index)=>{
-
-      resultado +=
-`CADASTRO ${index+1}
-
-Nome: ${cadastro.nome}
-CPF: ${cadastro.cpf}
-Curso: ${cadastro.curso}
-Tipo: ${cadastro.tipo}
-Data: ${cadastro.dataHora}
-Status: ${cadastro.status}
-
-`;
-    });
-
-    alert(resultado);
-
-  }catch(e){
-
-    alert("Erro ao consultar CPF.");
-    console.log(e);
-  }
-}
-// ==================== FORMATAÇÕES ====================
 
 function formatarCPF(campo){
   let v = campo.value.replace(/\D/g,'');
@@ -636,10 +369,6 @@ const box = document.getElementById("boxTermo");
 function liberarAceite(){
   aceite.disabled = false;
 }
-
-box.addEventListener("scroll", () => {
-
-  box.addEventListener("scroll", () => {
 
   box.addEventListener("scroll", () => {
 
@@ -763,49 +492,13 @@ async function pegarIP(){
   }
 }
 
-// ==================== GOOGLE SHEETS ====================
-async function enviarParaSheets(dados){
-
-  try{
-
-    const resposta = await fetch(
-      "https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec",
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body: JSON.stringify(dados)
-      }
-    );
-
-    const texto = await resposta.text();
-
-    console.log("Resposta API:", texto);
-
-    if(texto !== "OK"){
-      alert("Erro ao salvar na planilha.");
-      return false;
-    }
-
-    return true;
-
-  }catch(e){
-
-    console.log(e);
-
-    alert("Erro de conexão com a planilha.");
-
-    return false;
-  }
-}
   // ==================== FINALIZAR ====================
 botao.addEventListener("click", async ()=>{
 
-  if(jaEnviado()){
-    alert("Este CPF já foi utilizado neste dispositivo.");
-    return;
-  }
+ if(jaEnviado()){
+  alert("Este CPF já foi utilizado neste dispositivo.");
+  return;
+}
 
 const { jsPDF } = window.jspdf;
 const doc = new jsPDF({
@@ -903,16 +596,14 @@ const linhasDeclaracao =
 
 verificarPagina(linhasDeclaracao.length * 6);
 
-y = textoJustificado(
-  doc,
+doc.text(
   declaracaoCompleta,
   20,
   y,
-  170,
-  6
+  { maxWidth: 170 }
 );
 
-y += 10;
+y += 35;
 
 
 verificarPagina();
@@ -969,13 +660,17 @@ doc.text(textoInfo,20,y);
 
 y += (textoInfo.length * 6) + 10;
 
-y += 10;
-verificarPagina();
+y += 12;
+
 doc.setFont(undefined,"bold");
+doc.setFontSize(12);
+
 doc.text("REEMBOLSO",20,y);
 
-y += 15;
+y += 8;
+
 doc.setFont(undefined,"normal");
+doc.setFontSize(11);
 
 const textoReembolso = doc.splitTextToSize(
 `O aluno declara estar ciente de que, após a emissão do código de acesso individual e exclusivo para realização do curso na plataforma de ensino, considera-se iniciada a prestação dos serviços contratados.
@@ -992,16 +687,12 @@ verificarPagina(textoReembolso.length * 6);
 
 doc.text(textoReembolso,20,y);
 
-y += textoReembolso.length * 6;
-y += 10;
+y += (textoReembolso.length * 5) + 8;
 
 
-
-y +=10;
 verificarPagina();
 doc.setFont(undefined,"bold");
 doc.text("RESPONSABILIDADE DO DECLARANTE",20,y);
-
 y += 15;
 doc.setFont(undefined,"normal");
 
@@ -1135,51 +826,9 @@ document.body.appendChild(link);
 link.click();
 document.body.removeChild(link);
 
+});
 
-  // ================= ENVIO =================
- const enviado = await enviarParaSheets(dados);
-
-if(enviado){
-
-  marcarEnviado(dados);
-
-  alert("Inscrição finalizada com sucesso!");
-
-}else{
-
-  alert("PDF gerado, mas não foi salvo na planilha.");
-}
-});  
-function excluirCadastro(chave){
-
-  const motivo = prompt(
-    "Motivo da exclusão:"
-  );
-
-  if(motivo===null) return;
-
-  const cadastro = JSON.parse(
-    localStorage.getItem(chave)
-  );
-
-  localStorage.setItem(
-    "excluido_"+Date.now(),
-    JSON.stringify({
-      nome: cadastro.nome,
-      cpf: cadastro.cpf,
-      curso: cadastro.curso,
-      tipo: cadastro.tipo,
-      motivo: motivo,
-      dataExclusao: new Date().toLocaleString()
-    })
-  );
   
-  localStorage.removeItem(chave);
-
-  alert("Cadastro excluído com sucesso.");
-
-  listarCadastros();
-}
 </script>
 </body>
 </html>
