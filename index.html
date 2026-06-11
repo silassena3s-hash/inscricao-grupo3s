@@ -294,20 +294,24 @@ PRÓXIMO
   
 <select id="curso">
 <option value="">Selecione o curso</option>
+
 <option>Transporte Coletivo de Passageiros</option>
 <option>Transporte Escolar</option>
 <option>Transporte de Emergência</option>
 <option>Transporte de Produtos Perigosos (MOPP)</option>
 <option>Transporte de Cargas Indivisíveis</option>
+
 <option>NR 06 - EPI</option>
 <option>NR 11 - Operador de Empilhadeira</option>
 <option>NR 12 - Segurança em Máquinas</option>
 <option>NR 20 - Inflamáveis</option>
 <option>NR 35 - Trabalho em Altura</option>
+
 <option>Direção Defensiva</option>
 <option>Direção Defensiva + Primeiros Socorros</option>
 <option>Primeiros Socorros</option>
 <option>Logística Básica</option>
+
 </select>
 
 <select id="tipo">
@@ -316,6 +320,11 @@ PRÓXIMO
 <option>Atualização</option>
 </select>
 
+<input
+id="valorCurso"
+placeholder="Valor do curso"
+value="49,90"
+/>
 
 <h3>Termo e Declaração</h3>
 
@@ -488,6 +497,74 @@ const celular = document.getElementById("celular");
 const cpf = document.getElementById("cpf");
 const curso = document.getElementById("curso");
 const tipo = document.getElementById("tipo");
+  const valorCurso =
+document.getElementById("valorCurso");
+
+const cursosDetran = [
+
+"Transporte Coletivo de Passageiros",
+
+"Transporte Escolar",
+
+"Transporte de Emergência",
+
+"Transporte de Produtos Perigosos (MOPP)",
+
+"Transporte de Cargas Indivisíveis"
+
+];
+
+function atualizarValorCurso(){
+
+  const cursoSelecionado = curso.value;
+  const tipoSelecionado = tipo.value;
+
+  // CURSOS DETRAN
+  if(cursosDetran.includes(cursoSelecionado)){
+
+    if(tipoSelecionado === "Formação"){
+
+      valorCurso.value = "229,90";
+
+    }else if(tipoSelecionado === "Atualização"){
+
+      valorCurso.value = "199,90";
+
+    }
+
+    valorCurso.readOnly = true;
+
+    valorCurso.style.opacity = "0.8";
+
+  }else{
+
+    // CURSOS LIVRES
+    valorCurso.readOnly = false;
+
+    valorCurso.style.opacity = "1";
+
+    // VALOR PADRÃO
+    if(
+      valorCurso.value === "229,90" ||
+      valorCurso.value === "199,90" ||
+      valorCurso.value === ""
+    ){
+      valorCurso.value = "49,90";
+    }
+
+  }
+
+}
+
+curso.addEventListener(
+  "change",
+  atualizarValorCurso
+);
+
+tipo.addEventListener(
+  "change",
+  atualizarValorCurso
+);
 const aceite = document.getElementById("aceite");
 const assinatura = document.getElementById("assinatura");
 const botao = document.getElementById("btnFinalizar");
