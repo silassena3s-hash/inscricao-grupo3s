@@ -678,14 +678,19 @@ dados.status = "ATIVO";
 console.log("ENVIANDO...");
 console.log(dados);
   try{
-"https://script.google.com/macros/s/AKfycbyEGrLjAboETmbPXqLcTfUq1kC1GbXQgNmTB0uWeDnXIt4DalW-kxrCi8j9IaLuQMzz/exec",
-{
+
+const formData = new FormData();
+
+formData.append(
+  "dados",
+  JSON.stringify(dados)
+);
+
+const resposta = await fetch(https://script.google.com/macros/s/AKfycbyEGrLjAboETmbPXqLcTfUq1kC1GbXQgNmTB0uWeDnXIt4DalW-kxrCi8j9IaLuQMzz/exec,{
   method:"POST",
-  headers:{
-    "Content-Type":"application/json"
-  },
-  body: JSON.stringify(dados)
+  body: formData
 });
+ 
 
   const retorno = await resposta.text();
 
