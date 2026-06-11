@@ -233,15 +233,18 @@ const curso = localStorage.getItem("curso");
 
 document.getElementById("codigo").innerText = codigo || "Não encontrado";
 document.getElementById("curso").innerText = curso || "Não informado";
-document.getElementById("valorTexto")
-.innerText =
-"R$ " + valor.replace(".",",");  
-
-// 💰 CONFIG
 const chavePix = "671ba144-840b-4be5-b9fb-5f387746ee99";
 
 const valor =
 localStorage.getItem("valorCurso") || "49.90";
+
+const nome = "SILAS SENA";
+
+const cidade = "RIBEIRAO PRETO";
+
+document.getElementById("valorTexto")
+.innerText =
+"R$ " + valor.replace(".",",");
 
 const nome = "SILAS SENA";
 
