@@ -679,13 +679,15 @@ console.log("ENVIANDO...");
 console.log(dados);
   try{
 
-  const resposta = await fetch(https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body: JSON.stringify(dados)
-  });
+ const resposta = await fetch(
+  "https://script.google.com/macros/s/AKfycbwYf1bf589iROAEBJtKpB3V9St1iyNgcHM1VAw17KuS1xtDtxxG3CKLcZO8u-EBP_Lm/exec",
+{
+  method:"POST",
+  headers:{
+    "Content-Type":"application/json"
+  },
+  body: JSON.stringify(dados)
+});
 
   const retorno = await resposta.text();
 
