@@ -193,6 +193,17 @@ select:focus{
     transform:translateX(0);
   }
 }
+  .botoes{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+
+.botoes button{
+  flex:1;
+  margin-top:0;
+}
+  
 @media (max-width:480px){
   header h1{font-size:20px;}
   header p{font-size:13px;}
@@ -260,6 +271,10 @@ PRÓXIMO
 <input id="categoriaCNH" placeholder="Categoria CNH" onkeyup="this.value=this.value.toUpperCase()">
 <input id="numeroCNH" placeholder="Número de registro da CNH">
 
+<div class="botoes">
+
+<div class="botoes">
+
 <button type="button" onclick="voltarEtapa()">
 VOLTAR
 </button>
@@ -279,6 +294,8 @@ PRÓXIMO
 <input id="bairro" placeholder="Bairro">
 <input id="cidade" placeholder="Cidade">
 <input id="estado" placeholder="Estado" onkeyup="this.value=this.value.toUpperCase()">
+
+<div class="botoes">
 
 <button type="button" onclick="voltarEtapa()">
 VOLTAR
