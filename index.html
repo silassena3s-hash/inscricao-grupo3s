@@ -1070,9 +1070,23 @@ document.body.appendChild(link);
 link.click();
 document.body.removeChild(link);
 marcarEnviado(dados);
+localStorage.setItem(
+  "valorCurso",
+  dados.valorCurso.replace(",",".")
+);
 
-alert("Inscrição realizada com sucesso!");
+localStorage.setItem(
+  "curso",
+  dados.curso
+);
+
+localStorage.setItem(
+  "codigo",
+  dados.contratoID
+);
   
+alert("Inscrição realizada com sucesso!");
+  window.location.href = "pagamento.html";
 });
 
  const etapas = document.querySelectorAll(".etapa");
