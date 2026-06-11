@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta c
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pagamento 3S</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#0f172a;
+  font-family:Arial, sans-serif;
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:15px;
+}
+
+.container{
+  width:100%;
+  max-width:420px;
+  background:#1e293b;
+  border-radius:22px;
+  padding:25px;
+  box-shadow:0 0 25px rgba(0,0,0,0.4);
+}
+
+.logo{
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+h2{
+  font-size:28px;
+  margin-bottom:20px;
+}
+
+.info{
+  background:#0f172a;
+  border-radius:14px;
+  padding:15px;
+  margin-bottom:20px;
+  text-align:left;
+}
+
+.info p{
+  margin-bottom:10px;
+  font-size:17px;
+  line-height:1.5;
+}
+
+.info span{
+  color:#22c55e;
+  font-weight:bold;
+}
+
+#qrcode{
+  display:flex;
+  justify-content:center;
+  margin:25px 0;
+}
+
+#qrcode img{
+  width:260px !important;
+  height:260px !important;
+  background:#fff;
+  padding:12px;
+  border-radius:18px;
+}
+
+.pix-area{
+  background:#000;
+  border-radius:14px;
+  padding:15px;
+  margin-top:15px;
+  margin-bottom:20px;
+}
+
+.pix-title{
+  margin-bottom:10px;
+  font-size:16px;
+  color:#22c55e;
+  font-weight:bold;
+}
+
+.pix{
+  font-size:14px;
+  line-height:1.6;
+  word-break:break-all;
+  color:#fff;
+}
+
+button{
+  width:100%;
+  border:none;
+  border-radius:14px;
+  padding:18px;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:12px;
+  transition:0.2s;
+}
+
+.btn-copy{
+  background:#22c55e;
+  color:#000;
+}
+
+.btn-copy:active{
+  transform:scale(0.98);
+}
+
+.btn-confirm{
+  background:#2563eb;
+  color:#fff;
+}
+
+.btn-confirm:active{
+  transform:scale(0.98);
+}
+
+.status{
+  margin-top:18px;
+  font-size:14px;
+  color:#94a3b8;
+}
+
+@media(max-width:480px){
+
+  .container{
+    padding:20px;
+  }
+
+  h2{
+    font-size:24px;
+  }
+
+  .info p{
+    font-size:15px;
+  }
+
+  #qrcode img{
+    width:230px !important;
+    height:230px !important;
+  }
+
+  button{
+    font-size:16px;
+    padding:16px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">💰</div>
+
+<h2>Pagamento PIX</h2>
+
+<div class="info">
+  <p>Curso:<br><span id="curso"></span></p>
+
+  <p>Código:<br><span id="codigo"></span></p>
+
+  <p>Valor:<br><span>R$ 49,90</span></p>
+</div>
+
+<div id="qrcode"></div>
+
+<div class="pix-area">
+
+<div class="pix-title">
+PIX COPIA E COLA
+</div>
+
+<div class="pix" id="pix"></div>
+
+</div>
+
+<button class="btn-copy" onclick="copiar()">
+📋 COPIAR PIX
+</button>
+
+<button class="btn-confirm" onclick="confirmarPagamento()">
+✔ JÁ REALIZEI O PAGAMENTO
+</button>
+
+<div class="status">
+Após o pagamento, aguarde a liberação do sistema.
+</div>
+
+</div>
+
+<script>
+
+// 🔥 FIREBASE
+const firebaseConfig = {
+  apiKey: "SUA_API",
+  authDomain: "sistema-d447d.firebaseapp.com",
+  projectId: "sistema-d447d",
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+
+// 🔑 DADOS
+const codigo = localStorage.getItem("codigo");
+const curso = localStorage.getItem("curso");
+
+document.getElementById("codigo").innerText = codigo || "Não encontrado";
+document.getElementById("curso").innerText = curso || "Não informado";
+
+// 💰 CONFIG
+const chavePix = "671ba144-840b-4be5-b9fb-5f387746ee99";
+
+const valor = "49.90";
+
+const nome = "SILAS SENA";
+
+const cidade = "RIBEIRAO PRETO";
+
+// 🔥 GERAR PIX
+function gerarPix(){
+
+  function f(id, value){
+    return id + value.length.toString().padStart(2,'0') + value;
+  }
+
+  let p = "";
+
+  p += f("00","01");
+
+  p += f(
+    "26",
+    f("00","BR.GOV.BCB.PIX") +
+    f("01", chavePix)
+  );
+
+  p += f("52","0000");
+
+  p += f("53","986");
+
+  p += f("54", valor);
+
+  p += f("58","BR");
+
+  p += f("59", nome);
+
+  p += f("60", cidade);
+
+  // IDENTIFICADOR DO PAGAMENTO
+  p += f("62", f("05", codigo || "***"));
+
+  // CRC16 CORRETO
+  function crc16(payload){
+
+    let polinomio = 0x1021;
+    let resultado = 0xFFFF;
+
+    for(let i = 0; i < payload.length; i++){
+
+      resultado ^= (payload.charCodeAt(i) << 8);
+
+      for(let j = 0; j < 8; j++){
+
+        if(resultado & 0x8000){
+          resultado = (resultado << 1) ^ polinomio;
+        }else{
+          resultado = resultado << 1;
+        }
+
+        resultado &= 0xFFFF;
+
+      }
+
+    }
+
+    return resultado
+      .toString(16)
+      .toUpperCase()
+      .padStart(4, '0');
+
+  }
+
+// CRC FINAL
+p += "6304" + crc16(p + "6304");
+
+return p;
+
+}
+
+// GERAR PIX
+const pix = gerarPix();
+
+// MOSTRAR
+document.getElementById("pix").innerText = pix;
+
+// QR CODE
+new QRCode(document.getElementById("qrcode"), {
+  text: pix,
+  width: 260,
+  height: 260
+});
+
+// COPIAR
+function copiar(){
+
+  navigator.clipboard.writeText(pix);
+
+  alert("PIX copiado com sucesso!");
+
+}
+
+// CONFIRMAR
+async function confirmarPagamento(){
+
+  if(!codigo){
+
+    alert("Código inválido");
+
+    return;
+
+  }
+
+  const snapshot = await db
+    .collection("motoristas")
+    .where("codigo","==",codigo)
+    .get();
+
+  if(snapshot.empty){
+
+    alert("Cadastro não encontrado");
+
+    return;
+
+  }
+
+  snapshot.forEach(async (doc)=>{
+
+    await db
+      .collection("motoristas")
+      .doc(doc.id)
+      .update({
+
+        status:"aguardando_confirmacao",
+
+        comprovanteEnviado:true,
+
+        dataPagamento:new Date().toISOString()
+
+      });
+
+  });
+
+  alert(
+    "Pagamento enviado para análise. Aguarde a liberação."
+  );
+
+}
+
+</script>
+
+</body>
+</html>
