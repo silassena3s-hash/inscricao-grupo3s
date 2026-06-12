@@ -1046,7 +1046,17 @@ localStorage.setItem(
 );
   
 alert("Inscrição realizada com sucesso!");
-  window.location.href = "pagamento.html";
+  
+ const pdfBlob = doc.output("blob");
+
+const pdfUrl = URL.createObjectURL(pdfBlob);
+
+sessionStorage.setItem("pdfContratoTemp", pdfUrl);
+
+marcarEnviado(dados);
+
+window.location.href = "pagamento.html";
+  
 });
 
  const etapas = document.querySelectorAll(".etapa");
