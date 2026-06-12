@@ -6,7 +6,7 @@
 
 <title>Pagamento 3S</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="htpdfContratoTemptps://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -215,29 +215,8 @@ Após o pagamento, aguarde a liberação do sistema.
 </div>
 
 <script>
+  
 function liberarContrato(){
-
-  const pdf =
-    localStorage.getItem("pdfContratoTemp");
-
-  if(pdf){
-
-    const link =
-      document.createElement("a");
-
-    link.href = pdf;
-
-    link.download =
-      "CONTRATO_GRUPO3S.pdf";
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-
-  }
-
   // REMOVE PDF TEMPORÁRIO
   localStorage.removeItem("pdfContratoTemp");
 
@@ -269,10 +248,6 @@ const chavePix = "671ba144-840b-4be5-b9fb-5f387746ee99";
 
 const valor =
 localStorage.getItem("valorCurso") || "49.90";
-
-const nome = "SILAS SENA";
-
-const cidade = "RIBEIRAO PRETO";
 
 document.getElementById("valorTexto")
 .innerText =
@@ -416,9 +391,11 @@ async function confirmarPagamento(){
   });
 
   alert(
-    "Pagamento enviado para análise. Aguarde a liberação."
-  );
+  "Pagamento enviado para análise. Aguarde a liberação."
+);
 
+liberarContrato();
+  
 }
   const pdf = localStorage.getItem("pdfContratoTemp");
 
