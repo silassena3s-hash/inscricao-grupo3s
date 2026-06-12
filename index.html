@@ -273,8 +273,6 @@ PRÓXIMO
 
 <div class="botoes">
 
-<div class="botoes">
-
 <button type="button" onclick="voltarEtapa()">
 VOLTAR
 </button>
@@ -691,14 +689,6 @@ function marcarEnviado(dados){
     JSON.stringify(registro)
   );
 
-}
-
-// ==================== HASH ====================
-async function gerarHash(texto){
-  const data = new TextEncoder().encode(texto);
-  const hash = await crypto.subtle.digest("SHA-256", data);
-  return Array.from(new Uint8Array(hash))
-    .map(b=>b.toString(16).padStart(2,"0")).join("");
 }
 
 // ==================== IP ====================
