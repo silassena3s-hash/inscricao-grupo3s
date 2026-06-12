@@ -217,13 +217,34 @@ Após o pagamento, aguarde a liberação do sistema.
 <script>
   
 function liberarContrato(){
-  // REMOVE PDF TEMPORÁRIO
-  localStorage.removeItem("pdfContratoTemp");
 
-  // LIMPA DADOS DA SESSÃO
+  const pdf =
+    sessionStorage.getItem("pdfContratoTemp");
+
+  if(pdf){
+
+    const link =
+      document.createElement("a");
+
+    link.href = pdf;
+
+    link.download =
+      "CONTRATO_GRUPO3S.pdf";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+  }
+
+  // REMOVE PDF TEMPORÁRIO
+  sessionStorage.removeItem("pdfContratoTemp");
+
+  // LIMPA DADOS TEMPORÁRIOS
   sessionStorage.clear();
 
-  // OPCIONAL:
   alert("Pagamento confirmado!");
 
 }
